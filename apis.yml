@@ -1,0 +1,13 @@
+aid: email-verifier-api
+url: https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/apis.yml
+name: Email Verifier API
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+description: '16-point email verification API with real-time SMTP checks and disposable email detection.'
+created: '2026-05-06'
+modified: '2026-05-06'
+specificationVersion: '0.19'
+tags:
+  - API
+url-source: https://emailverifierapi.com/
+apis: []
