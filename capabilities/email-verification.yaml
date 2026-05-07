@@ -1,0 +1,122 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Email Verifier API Email Verification
+  description: |-
+    Workflow capability that wraps the Email Verifier API 16-point verification engine. Used by
+    growth, marketing, and lead-generation teams to validate email addresses at signup, before
+    a marketing send, and during list cleanup. Exposes a single normalized verify-email
+    operation as a REST resource and an MCP tool, with credit-balance awareness so AI agents
+    can budget verification work against the customer's remaining credits.
+  tags:
+    - Email Verification
+    - Deliverability
+    - SMTP Check
+    - Bounce Prevention
+    - Lead Validation
+  created: '2026-05-06'
+  modified: '2026-05-06'
+binds:
+  - namespace: env
+    keys:
+      EMAIL_VERIFIER_API_KEY: EMAIL_VERIFIER_API_KEY
+capability:
+  consumes:
+    - type: http
+      namespace: email-verifier
+      baseUri: https://emailverifierapi.com/v2
+      description: Email Verifier API real-time verification endpoint.
+      authentication:
+        type: apiKey
+        in: query
+        name: apiKey
+        token: '{{EMAIL_VERIFIER_API_KEY}}'
+      resources:
+        - name: verification
+          path: /
+          description: Real-time email verification.
+          operations:
+            - name: verify-email
+              method: GET
+              description: Verify a single email address.
+              inputParameters:
+                - name: email
+                  in: query
+                  type: string
+                  required: true
+                  description: Email address to verify.
+                - name: xml
+                  in: query
+                  type: boolean
+                  required: false
+                  description: Return XML payload instead of JSON.
+              outputRawFormat: json
+              outputParameters:
+                - name: status
+                  type: string
+                  value: $.status
+                - name: event
+                  type: string
+                  value: $.event
+                - name: details
+                  type: string
+                  value: $.details
+                - name: emailSuggested
+                  type: string
+                  value: $.emailSuggested
+                - name: isDisposable
+                  type: boolean
+                  value: $.isDisposable
+                - name: isRoleAccount
+                  type: boolean
+                  value: $.isRoleAccount
+                - name: isFreeService
+                  type: boolean
+                  value: $.isFreeService
+                - name: remaining
+                  type: string
+                  value: $.remaining
+                - name: result
+                  type: object
+                  value: $.
+  exposes:
+    - type: rest
+      port: 8080
+      namespace: email-verifier-rest
+      description: Normalized REST surface for the Email Verifier API.
+      resources:
+        - path: /v1/verify
+          name: verify
+          description: Verify a single email address.
+          operations:
+            - method: GET
+              name: verify-email
+              description: Verify an email address and return the deliverability verdict, event code, and intelligence flags.
+              call: email-verifier.verify-email
+              with:
+                email: rest.email
+              outputParameters:
+                - type: object
+                  mapping: $.
+    - type: mcp
+      port: 9090
+      namespace: email-verifier-mcp
+      transport: http
+      description: MCP server exposing the Email Verifier API verification engine to AI agents.
+      tools:
+        - name: verify-email
+          description: |-
+            Verify whether an email address is deliverable using the Email Verifier API 16-point engine.
+            Returns a top-level status (passed / failed / unknown / transient), a granular event code
+            (mailboxExists, mailboxDoesNotExist, isCatchall, isGreylisting, etc.), and intelligence
+            flags such as isDisposable, isRoleAccount, isFreeService, and isGibberish. The response
+            includes the customer's remaining credit balance so the agent can budget further work.
+          hints:
+            readOnly: true
+            idempotent: true
+            openWorld: true
+          call: email-verifier.verify-email
+          with:
+            email: tools.email
+          outputParameters:
+            - type: object
+              mapping: $.

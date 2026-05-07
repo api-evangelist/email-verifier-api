@@ -1,0 +1,42 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "@vocab": "https://schema.org/",
+    "evapi": "https://emailverifierapi.com/vocab#",
+    "schema": "https://schema.org/",
+
+    "VerificationResult": "evapi:VerificationResult",
+    "EmailAddress": "evapi:EmailAddress",
+    "MailExchange": "evapi:MailExchange",
+
+    "status": "evapi:status",
+    "event": "evapi:event",
+    "details": {
+      "@id": "schema:description",
+      "@type": "xsd:string"
+    },
+    "email": {
+      "@id": "schema:email",
+      "@type": "xsd:string"
+    },
+    "emailSuggested": "evapi:emailSuggested",
+    "mailbox": "evapi:mailbox",
+    "domain": "evapi:domain",
+    "mxIp": "evapi:mxIp",
+    "mxLocation": {
+      "@id": "schema:addressCountry",
+      "@type": "xsd:string"
+    },
+    "possibleSpamtrap": "evapi:possibleSpamtrap",
+    "isComplainer": "evapi:isComplainer",
+    "isDisposable": "evapi:isDisposable",
+    "isFreeService": "evapi:isFreeService",
+    "isOffensive": "evapi:isOffensive",
+    "isRoleAccount": "evapi:isRoleAccount",
+    "isGibberish": "evapi:isGibberish",
+    "remaining": "evapi:remaining",
+    "execution": "evapi:execution",
+
+    "xsd": "http://www.w3.org/2001/XMLSchema#"
+  }
+}

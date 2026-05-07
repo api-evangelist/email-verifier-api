@@ -1,0 +1,289 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Email Verifier API
+providerId: email-verifier-api
+created: '2026-05-06'
+modified: '2026-05-06'
+reconciled: true
+tags:
+  - Email Verification
+  - Deliverability
+  - SMTP Check
+  - Bounce Prevention
+description: |-
+  Email Verifier API uses a transparent, pay-as-you-go credit model. There are no
+  subscriptions or contracts; customers buy credits in fixed packs and the credits
+  never expire. Only "Paid" verification events (mailbox-level outcomes that require
+  an SMTP probe) consume credits. Free events (syntax errors, missing DNS / MX,
+  catch-all, greylisting, transient errors) do not draw down the balance. A free tier
+  of 100 credits is granted at signup with no credit card required, and high-volume
+  custom pricing is available through sales.
+sources:
+  - https://emailverifierapi.com/pricing/
+  - https://emailverifierapi.com/api-docs/
+notes: |-
+  Per-email price falls as the credit pack size increases, from $0.0080/email at
+  1,000 credits down to $0.0013/email at 10,000,000 credits. Credits never expire
+  and are deducted only for Paid events, so the effective per-deliverable-result
+  cost is slightly lower than the headline credit price.
+plans:
+  - id: free
+    name: Free
+    type: free
+    description: Free tier granted at registration. No credit card required.
+    entries:
+      - label: Free credits
+        name: free_credits
+        type: one-time
+        metric: credit
+        limit: 100
+        timeFrame: lifetime
+        geo: global
+        unit: 100
+        price: 0
+        userMultiplied: false
+    elements:
+      - name: 16-point verification engine
+      - name: JSON or XML response
+      - name: API key authentication
+  - id: payg-1k
+    name: Pay-As-You-Go 1,000 Credits
+    type: payg
+    description: 1,000-credit pack.
+    entries:
+      - label: 1,000 credits
+        name: credits_1k
+        type: one-time
+        metric: credit
+        limit: 1000
+        timeFrame: lifetime
+        geo: global
+        unit: 1000
+        price: 7.95
+        currency: USD
+        userMultiplied: false
+    elements:
+      - name: $0.0080 per email
+      - name: Credits never expire
+  - id: payg-5k
+    name: Pay-As-You-Go 5,000 Credits
+    type: payg
+    description: 5,000-credit pack.
+    entries:
+      - label: 5,000 credits
+        name: credits_5k
+        type: one-time
+        metric: credit
+        limit: 5000
+        timeFrame: lifetime
+        geo: global
+        unit: 5000
+        price: 39.95
+        currency: USD
+        userMultiplied: false
+    elements:
+      - name: $0.0080 per email
+      - name: Credits never expire
+  - id: payg-10k
+    name: Pay-As-You-Go 10,000 Credits
+    type: payg
+    description: 10,000-credit pack.
+    entries:
+      - label: 10,000 credits
+        name: credits_10k
+        type: one-time
+        metric: credit
+        limit: 10000
+        timeFrame: lifetime
+        geo: global
+        unit: 10000
+        price: 49.95
+        currency: USD
+        userMultiplied: false
+    elements:
+      - name: $0.0050 per email
+      - name: Credits never expire
+  - id: payg-25k
+    name: Pay-As-You-Go 25,000 Credits
+    type: payg
+    description: 25,000-credit pack.
+    entries:
+      - label: 25,000 credits
+        name: credits_25k
+        type: one-time
+        metric: credit
+        limit: 25000
+        timeFrame: lifetime
+        geo: global
+        unit: 25000
+        price: 124.95
+        currency: USD
+        userMultiplied: false
+    elements:
+      - name: $0.0050 per email
+  - id: payg-50k
+    name: Pay-As-You-Go 50,000 Credits
+    type: payg
+    description: 50,000-credit pack.
+    entries:
+      - label: 50,000 credits
+        name: credits_50k
+        type: one-time
+        metric: credit
+        limit: 50000
+        timeFrame: lifetime
+        geo: global
+        unit: 50000
+        price: 249.95
+        currency: USD
+        userMultiplied: false
+    elements:
+      - name: $0.0050 per email
+  - id: payg-100k
+    name: Pay-As-You-Go 100,000 Credits
+    type: payg
+    description: 100,000-credit pack.
+    entries:
+      - label: 100,000 credits
+        name: credits_100k
+        type: one-time
+        metric: credit
+        limit: 100000
+        timeFrame: lifetime
+        geo: global
+        unit: 100000
+        price: 399.95
+        currency: USD
+        userMultiplied: false
+    elements:
+      - name: $0.0040 per email
+  - id: payg-250k
+    name: Pay-As-You-Go 250,000 Credits
+    type: payg
+    description: 250,000-credit pack.
+    entries:
+      - label: 250,000 credits
+        name: credits_250k
+        type: one-time
+        metric: credit
+        limit: 250000
+        timeFrame: lifetime
+        geo: global
+        unit: 250000
+        price: 749.95
+        currency: USD
+        userMultiplied: false
+    elements:
+      - name: $0.0030 per email
+  - id: payg-500k
+    name: Pay-As-You-Go 500,000 Credits
+    type: payg
+    description: 500,000-credit pack.
+    entries:
+      - label: 500,000 credits
+        name: credits_500k
+        type: one-time
+        metric: credit
+        limit: 500000
+        timeFrame: lifetime
+        geo: global
+        unit: 500000
+        price: 1499.95
+        currency: USD
+        userMultiplied: false
+    elements:
+      - name: $0.0030 per email
+  - id: payg-1m
+    name: Pay-As-You-Go 1,000,000 Credits
+    type: payg
+    description: 1,000,000-credit pack.
+    entries:
+      - label: 1,000,000 credits
+        name: credits_1m
+        type: one-time
+        metric: credit
+        limit: 1000000
+        timeFrame: lifetime
+        geo: global
+        unit: 1000000
+        price: 2499.95
+        currency: USD
+        userMultiplied: false
+    elements:
+      - name: $0.0025 per email
+  - id: payg-2-5m
+    name: Pay-As-You-Go 2,500,000 Credits
+    type: payg
+    description: 2,500,000-credit pack.
+    entries:
+      - label: 2,500,000 credits
+        name: credits_2_5m
+        type: one-time
+        metric: credit
+        limit: 2500000
+        timeFrame: lifetime
+        geo: global
+        unit: 2500000
+        price: 4999.95
+        currency: USD
+        userMultiplied: false
+    elements:
+      - name: $0.0020 per email
+  - id: payg-5m
+    name: Pay-As-You-Go 5,000,000 Credits
+    type: payg
+    description: 5,000,000-credit pack.
+    entries:
+      - label: 5,000,000 credits
+        name: credits_5m
+        type: one-time
+        metric: credit
+        limit: 5000000
+        timeFrame: lifetime
+        geo: global
+        unit: 5000000
+        price: 7499.95
+        currency: USD
+        userMultiplied: false
+    elements:
+      - name: $0.0015 per email
+  - id: payg-10m
+    name: Pay-As-You-Go 10,000,000 Credits
+    type: payg
+    description: 10,000,000-credit pack.
+    entries:
+      - label: 10,000,000 credits
+        name: credits_10m
+        type: one-time
+        metric: credit
+        limit: 10000000
+        timeFrame: lifetime
+        geo: global
+        unit: 10000000
+        price: 12999.95
+        currency: USD
+        userMultiplied: false
+    elements:
+      - name: $0.0013 per email
+  - id: enterprise
+    name: Enterprise
+    type: enterprise
+    description: Custom volume pricing for high-throughput verification needs. Negotiated with sales.
+    entries:
+      - label: Custom contract
+        name: enterprise_contract
+        type: subscription
+        metric: contract
+        limit: -1
+        timeFrame: year
+        geo: global
+        unit: 1
+        price: contact sales
+        userMultiplied: false
+    elements:
+      - name: Volume discount beyond 10M credits
+      - name: Dedicated support
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

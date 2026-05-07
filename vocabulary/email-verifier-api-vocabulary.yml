@@ -1,0 +1,81 @@
+name: Email Verifier API Vocabulary
+version: '1.0'
+description: |-
+  Domain vocabulary, taxonomy, and term definitions for the Email Verifier API. Captures
+  the operational concepts of email-address verification: deliverability verdicts, event
+  codes, intelligence flags, and the 16 verification points exercised by the engine.
+namespace: https://emailverifierapi.com/vocab#
+created: '2026-05-06'
+modified: '2026-05-06'
+tags:
+  - Email Verification
+  - Deliverability
+  - SMTP Check
+  - Bounce Prevention
+terms:
+  - name: VerificationResult
+    definition: The structured outcome of a single email-address verification call.
+  - name: Status
+    definition: |-
+      Top-level deliverability verdict for a verified address. One of `passed`,
+      `failed`, `unknown`, or `transient`.
+    values:
+      - passed
+      - failed
+      - unknown
+      - transient
+  - name: Event
+    definition: |-
+      Fine-grained outcome code returned alongside the status, identifying which of the
+      16 verification points produced the verdict.
+    values:
+      - mailboxExists
+      - mailboxDoesNotExist
+      - mailboxIsFull
+      - domainDoesNotExist
+      - mxServerDoesNotExist
+      - invalidSyntax
+      - isCatchall
+      - isGreylisting
+      - transientError
+  - name: SyntaxCheck
+    definition: RFC 5321/5322 lexical validation of the email address.
+  - name: SmtpHandshake
+    definition: Real-time SMTP RCPT TO probe to confirm the mailbox accepts mail.
+  - name: MxRecord
+    definition: DNS MX record lookup to resolve the mail exchange server for the domain.
+  - name: DnsValidation
+    definition: Verification that the domain has active DNS records.
+  - name: SpamTrap
+    definition: Honeypot or recycled address used by ISPs and blocklist operators to detect senders.
+  - name: Complainer
+    definition: User who frequently marks email as spam, depressing sender reputation.
+  - name: Greylisting
+    definition: Temporary SMTP defense in which the receiving server defers the first delivery attempt.
+  - name: MailboxFull
+    definition: Mailbox is over its storage quota and is rejecting new mail.
+  - name: TypoSuggest
+    definition: Domain misspelling correction (gmial.com -> gmail.com).
+  - name: Disposable
+    definition: Burner / temporary email provider where addresses self-destruct or rotate.
+  - name: RoleAccount
+    definition: Departmental alias such as info@, sales@, support@, marketing@.
+  - name: CatchAll
+    definition: Mail server that accepts all addresses for the domain regardless of mailbox existence.
+  - name: GibberishDetection
+    definition: Heuristic that flags machine-generated or keyboard-smash local parts.
+  - name: OffensiveContent
+    definition: Local part containing profanity or otherwise unsafe-for-brand language.
+  - name: B2BLeadScoring
+    definition: Classification of an address as corporate (B2B) versus consumer (B2C).
+  - name: SmtpProvider
+    definition: Identification of the underlying email host (Google, Microsoft 365, Yahoo, etc.).
+  - name: Credit
+    definition: Unit of metered consumption. Paid events consume one credit; free events do not.
+  - name: PaidEvent
+    definition: Event whose result depends on an SMTP probe and therefore consumes a credit.
+  - name: FreeEvent
+    definition: Event resolved deterministically (syntax / DNS / MX) and not charged against credits.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,20 @@
+{
+  "status": "failed",
+  "event": "mailboxDoesNotExist",
+  "details": "The mailbox does not exist.",
+  "email": "throwaway@mailinator.com",
+  "emailSuggested": null,
+  "mailbox": "throwaway",
+  "domain": "mailinator.com",
+  "mxIp": "198.51.100.10",
+  "mxLocation": "US",
+  "possibleSpamtrap": false,
+  "isComplainer": false,
+  "isDisposable": true,
+  "isFreeService": false,
+  "isOffensive": false,
+  "isRoleAccount": false,
+  "isGibberish": false,
+  "remaining": "9940",
+  "execution": 0.221
+}

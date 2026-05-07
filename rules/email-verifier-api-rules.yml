@@ -1,0 +1,78 @@
+extends:
+  - spectral:oas
+rules:
+  email-verifier-api-info-contact:
+    description: Info object must declare a contact for support.
+    given: $.info
+    severity: error
+    then:
+      field: contact
+      function: truthy
+  email-verifier-api-info-license:
+    description: Info object must declare a license.
+    given: $.info
+    severity: warn
+    then:
+      field: license
+      function: truthy
+  email-verifier-api-server-https:
+    description: All declared servers must use HTTPS.
+    given: $.servers[*].url
+    severity: error
+    then:
+      function: pattern
+      functionOptions:
+        match: ^https://
+  email-verifier-api-operation-summary-title-case:
+    description: Operation summary should use Title Case.
+    given: $.paths[*][get,post,put,patch,delete].summary
+    severity: warn
+    then:
+      function: pattern
+      functionOptions:
+        match: '^([A-Z][A-Za-z0-9]*)( [A-Z0-9][A-Za-z0-9()/-]*)*$'
+  email-verifier-api-operation-tagged:
+    description: Every operation must be tagged.
+    given: $.paths[*][get,post,put,patch,delete]
+    severity: error
+    then:
+      field: tags
+      function: truthy
+  email-verifier-api-operation-id:
+    description: Every operation must have an operationId.
+    given: $.paths[*][get,post,put,patch,delete]
+    severity: error
+    then:
+      field: operationId
+      function: truthy
+  email-verifier-api-security-defined:
+    description: Security must be declared at the document level.
+    given: $
+    severity: error
+    then:
+      field: security
+      function: truthy
+  email-verifier-api-api-key-auth:
+    description: API key must be passed as a query parameter named apiKey.
+    given: $.components.securitySchemes[*]
+    severity: error
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          properties:
+            type: { const: apiKey }
+            in: { const: query }
+            name: { const: apiKey }
+          required: [type, in, name]
+  email-verifier-api-credit-fields:
+    description: VerificationResult schema must expose remaining credit balance and execution time.
+    given: $.components.schemas.VerificationResult.properties
+    severity: warn
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          required: [remaining, execution]

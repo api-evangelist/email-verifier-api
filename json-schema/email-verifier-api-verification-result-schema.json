@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/email-verifier-api/main/json-schema/email-verifier-api-verification-result-schema.json",
+  "title": "VerificationResult",
+  "description": "Result of a single email-address verification call against the Email Verifier API 16-point engine.",
+  "type": "object",
+  "required": [
+    "status",
+    "event",
+    "details",
+    "email",
+    "mailbox",
+    "domain",
+    "remaining",
+    "execution"
+  ],
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "Top-level deliverability verdict.",
+      "enum": ["passed", "failed", "unknown", "transient"]
+    },
+    "event": {
+      "type": "string",
+      "description": "Fine-grained event code returned by the verification engine.",
+      "enum": [
+        "mailboxExists",
+        "mailboxDoesNotExist",
+        "mailboxIsFull",
+        "domainDoesNotExist",
+        "mxServerDoesNotExist",
+        "invalidSyntax",
+        "isCatchall",
+        "isGreylisting",
+        "transientError"
+      ]
+    },
+    "details": { "type": "string", "description": "Human-readable explanation of the event." },
+    "email": { "type": "string", "format": "email", "description": "Email address verified." },
+    "emailSuggested": {
+      "type": ["string", "null"],
+      "description": "Suggested correction when a domain typo is detected."
+    },
+    "mailbox": { "type": "string", "description": "Local part of the verified address." },
+    "domain": { "type": "string", "description": "Domain part of the verified address." },
+    "mxIp": { "type": "string", "description": "IPv4 address of the resolved mail exchange server." },
+    "mxLocation": { "type": "string", "description": "ISO 3166-1 alpha-2 country code of the MX server." },
+    "possibleSpamtrap": { "type": "boolean", "description": "Address matches known honeypot or spam-trap patterns." },
+    "isComplainer": { "type": "boolean", "description": "Address belongs to a known frequent spam complainer." },
+    "isDisposable": { "type": "boolean", "description": "Address belongs to a disposable / burner provider." },
+    "isFreeService": { "type": "boolean", "description": "Address is on a free consumer mailbox provider." },
+    "isOffensive": { "type": "boolean", "description": "Address contains offensive language." },
+    "isRoleAccount": { "type": "boolean", "description": "Address is a role / departmental alias." },
+    "isGibberish": { "type": "boolean", "description": "Local part appears to be machine-generated." },
+    "remaining": { "type": "string", "description": "Customer credit balance remaining after the request." },
+    "execution": { "type": "number", "description": "Wall-clock execution time in seconds." }
+  }
+}

@@ -1,0 +1,105 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+provider: Email Verifier API
+providerId: email-verifier-api
+publisherName: Email Verifier API
+serviceCategory: Email Verification
+created: '2026-05-06'
+modified: '2026-05-06'
+reconciled: true
+tags:
+  - Email Verification
+  - Deliverability
+  - SMTP Check
+  - FinOps
+  - FOCUS
+description: |-
+  FOCUS-aligned FinOps scaffold for Email Verifier API. The vendor uses a single,
+  transparent commercial model: pay-as-you-go credit packs that never expire. Spend is
+  driven by the count of "Paid" verification events (mailbox-level outcomes that require
+  an SMTP probe). Free events (syntax, DNS, MX, catch-all, greylisting, transient
+  failures) do not consume credits, so the effective unit cost per deliverable result is
+  a function of list quality.
+sources:
+  - https://emailverifierapi.com/pricing/
+  - https://emailverifierapi.com/api-docs/
+notes: |-
+  Reconciled prices are the public credit-pack list prices in USD. Per-email price
+  declines from $0.0080 at 1,000 credits to $0.0013 at 10,000,000 credits. Since
+  credits are one-time purchases that never expire, the FOCUS ChargeCategory is
+  Purchase rather than Usage; the customer "burns down" the purchased asset over time.
+billingModel:
+  pricingCategory: PayAsYouGo
+  billingFrequency: OnDemand
+  billingCurrency: USD
+  chargeCategories:
+    - Purchase
+focusColumns:
+  ServiceName: Email Verifier API
+  ServiceCategory: Email Verification
+  ProviderName: Email Verifier API
+  PublisherName: Email Verifier API
+  InvoiceIssuerName: Email Verifier API
+  BillingCurrency: USD
+  ChargeCategory: Purchase
+meters:
+  - name: paid_verification
+    description: |-
+      Paid event consuming one credit. Issued for mailboxExists, mailboxDoesNotExist,
+      and mailboxIsFull outcomes that required an SMTP probe.
+    unit: verification
+    aggregation: sum
+    dimensions:
+      - api_key
+      - event
+      - status
+  - name: free_verification
+    description: |-
+      Free event that did not consume credits. Issued for invalidSyntax,
+      domainDoesNotExist, mxServerDoesNotExist, isCatchall, isGreylisting, and
+      transientError outcomes.
+    unit: verification
+    aggregation: sum
+    dimensions:
+      - api_key
+      - event
+      - status
+  - name: credit_pack_purchase
+    description: One-time purchase of a credit pack that never expires.
+    unit: pack
+    aggregation: sum
+    dimensions:
+      - pack_size
+      - unit_price
+principles:
+  - name: Visibility
+    description: |-
+      Every API response includes the `remaining` field with the up-to-date credit
+      balance and the `event`/`status` pair that determines whether the request was
+      Paid or Free. Capture both into the customer's metering store to attribute
+      verification spend per environment, tenant, or feature.
+  - name: Allocation
+    description: |-
+      Allocate credit-pack purchases to the team that owns the address-quality program
+      (typically growth / marketing-ops or auth / signup). Tag the API key per cost
+      center so that distinct environments and tenants do not co-mingle spend.
+  - name: Optimization
+    description: |-
+      Pre-filter input lists for syntax and disposable-domain matches before calling
+      the API; treat catch-all and greylisting as deferred outcomes rather than
+      retrying immediately. Buying larger credit packs unlocks materially lower
+      per-email pricing (down to $0.0013/email at 10M).
+  - name: Accountability
+    description: |-
+      Engineering signup / list-hygiene leads own per-event verification spend; finance
+      owns credit-pack purchase cadence and approves enterprise volume contracts.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

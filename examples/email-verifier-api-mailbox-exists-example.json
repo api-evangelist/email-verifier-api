@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "event": "mailboxExists",
+  "details": "The mailbox exists.",
+  "email": "john.doe@gmail.com",
+  "emailSuggested": null,
+  "mailbox": "john.doe",
+  "domain": "gmail.com",
+  "mxIp": "142.250.190.27",
+  "mxLocation": "US",
+  "possibleSpamtrap": false,
+  "isComplainer": false,
+  "isDisposable": false,
+  "isFreeService": true,
+  "isOffensive": false,
+  "isRoleAccount": false,
+  "isGibberish": false,
+  "remaining": "9942",
+  "execution": 0.368
+}

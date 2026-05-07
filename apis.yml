@@ -3,11 +3,218 @@ url: https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/he
 name: Email Verifier API
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
-description: '16-point email verification API with real-time SMTP checks and disposable email detection.'
+description: |-
+  Email Verifier API is a real-time email verification service offering a 16-point engine
+  that validates deliverability through syntax checking, DNS / MX lookups, real-time SMTP
+  handshakes, mailbox existence probing, catch-all and greylisting detection, disposable
+  address detection, role-account flagging, spam-trap and complainer detection, gibberish
+  and offensive-language scanning, B2B / B2C classification, typo correction, and SMTP
+  provider identification. The service is delivered as a single REST endpoint that
+  accepts GET or POST requests, returns JSON or XML, and meters usage against a
+  credit-pack balance that never expires. The product targets growth teams, ESPs, and
+  lead-generation operators that need to eliminate hard bounces and protect sender
+  reputation before they send.
 created: '2026-05-06'
 modified: '2026-05-06'
-specificationVersion: '0.19'
+specificationVersion: '0.20'
 tags:
-  - API
+  - Email Verification
+  - Deliverability
+  - SMTP Check
+  - Bounce Prevention
+  - Lead Validation
+  - Disposable Detection
+  - Spam Trap Detection
+  - Catch-All Detection
+  - Greylisting
+  - Role Account Detection
+  - Typo Suggestion
+  - B2B Lead Scoring
 url-source: https://emailverifierapi.com/
-apis: []
+apis:
+  - aid: email-verifier-api:verification
+    name: Email Verifier API Verification
+    description: |-
+      Real-time email-address verification endpoint. Single resource at
+      https://emailverifierapi.com/v2/ accepting GET or POST. Returns a top-level
+      deliverability status (passed / failed / unknown / transient), a granular event
+      code (mailboxExists, mailboxDoesNotExist, mailboxIsFull, domainDoesNotExist,
+      mxServerDoesNotExist, invalidSyntax, isCatchall, isGreylisting, transientError),
+      and a set of intelligence flags (isDisposable, isRoleAccount, isFreeService,
+      possibleSpamtrap, isComplainer, isOffensive, isGibberish), along with the MX
+      server IP and ISO country, a typo-corrected address suggestion, the remaining
+      credit balance, and the wall-clock execution time. Authentication is by API key
+      passed as the `apiKey` query parameter.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://emailverifierapi.com/api-docs/
+    baseURL: https://emailverifierapi.com/v2/
+    version: v2
+    tags:
+      - Email Verification
+      - Deliverability
+      - SMTP Check
+      - Bounce Prevention
+    properties:
+      - type: Documentation
+        url: https://emailverifierapi.com/api-docs/
+      - type: SignUp
+        url: https://emailverifierapi.com/register/
+      - type: Pricing
+        url: https://emailverifierapi.com/pricing/
+      - type: TermsOfService
+        url: https://emailverifierapi.com/terms-of-service/
+      - type: PrivacyPolicy
+        url: https://emailverifierapi.com/privacy-policy/
+      - type: Login
+        url: https://emailverifierapi.com/login/
+      - type: Blog
+        url: https://emailverifierapi.com/blog/
+      - type: Integrations
+        url: https://emailverifierapi.com/integrations/
+      - type: FreeTool
+        url: https://emailverifierapi.com/free-email-verifier/
+      - type: Directory
+        url: https://emailverifierapi.com/verify-company-emails/
+      - type: OpenAPI
+        url: https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/openapi/email-verifier-api-openapi.yml
+        x-local-path: openapi/email-verifier-api-openapi.yml
+      - type: JSONSchema
+        url: https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/json-schema/email-verifier-api-verification-result-schema.json
+        x-local-path: json-schema/email-verifier-api-verification-result-schema.json
+      - type: JSONStructure
+        url: https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/json-structure/email-verifier-api-verification-result-structure.json
+        x-local-path: json-structure/email-verifier-api-verification-result-structure.json
+      - type: JSONLD
+        url: https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/json-ld/email-verifier-api-context.jsonld
+        x-local-path: json-ld/email-verifier-api-context.jsonld
+      - type: SpectralRules
+        url: https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/rules/email-verifier-api-rules.yml
+        x-local-path: rules/email-verifier-api-rules.yml
+      - type: NaftikoCapability
+        url: https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/capabilities/email-verification.yaml
+        x-local-path: capabilities/email-verification.yaml
+      - type: Vocabulary
+        url: https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/vocabulary/email-verifier-api-vocabulary.yml
+        x-local-path: vocabulary/email-verifier-api-vocabulary.yml
+      - type: Plans
+        url: https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/plans/email-verifier-api-plans-pricing.yml
+        x-local-path: plans/email-verifier-api-plans-pricing.yml
+      - type: RateLimits
+        url: https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/rate-limits/email-verifier-api-rate-limits.yml
+        x-local-path: rate-limits/email-verifier-api-rate-limits.yml
+      - type: FinOps
+        url: https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/finops/email-verifier-api-finops.yml
+        x-local-path: finops/email-verifier-api-finops.yml
+    contact:
+      - FN: Email Verifier API Support
+        email: support@emailverifierapi.com
+common:
+  - type: Documentation
+    url: https://emailverifierapi.com/api-docs/
+  - type: SignUp
+    url: https://emailverifierapi.com/register/
+  - type: Login
+    url: https://emailverifierapi.com/login/
+  - type: Pricing
+    url: https://emailverifierapi.com/pricing/
+  - type: Blog
+    url: https://emailverifierapi.com/blog/
+  - type: TermsOfService
+    url: https://emailverifierapi.com/terms-of-service/
+  - type: PrivacyPolicy
+    url: https://emailverifierapi.com/privacy-policy/
+  - type: Integrations
+    url: https://emailverifierapi.com/integrations/
+  - type: FreeTool
+    url: https://emailverifierapi.com/free-email-verifier/
+  - type: Directory
+    url: https://emailverifierapi.com/verify-company-emails/
+  - type: Support
+    url: mailto:support@emailverifierapi.com
+  - type: Authentication
+    description: API key passed as the `apiKey` query parameter on every request.
+  - type: Features
+    data:
+      - name: 16-Point Verification Engine
+        description: Composite engine combining syntax, DNS, MX, SMTP handshake, mailbox existence, catch-all, greylisting, disposable, role, spam-trap, gibberish, offensive, B2B, typo, complainer, and SMTP-provider checks.
+      - name: Real-Time SMTP Verification
+        description: Live RCPT TO probe against the destination MX to confirm mailbox existence in real time.
+      - name: Disposable Detection
+        description: Match against 50,000+ known disposable / burner email providers.
+      - name: Role-Account Detection
+        description: Flag departmental aliases such as info@, sales@, support@, marketing@.
+      - name: Catch-All Detection
+        description: Identify domains whose MX accepts all addresses regardless of mailbox existence.
+      - name: Greylisting Handling
+        description: Distinguish temporary SMTP defenses from outright rejections so they can be retried.
+      - name: Typo Suggestion
+        description: Detect domain misspellings (gmial.com -> gmail.com) and return a corrected address.
+      - name: Spam-Trap and Complainer Detection
+        description: Identify honeypots and chronic spam-complainer addresses before they damage sender reputation.
+      - name: B2B / B2C Classification
+        description: Classify addresses as corporate (B2B) versus consumer (B2C) free-mailbox providers.
+      - name: Credit-Based Metering
+        description: Pay-as-you-go credit packs that never expire; only Paid (mailbox-level) events consume credits.
+      - name: JSON or XML Response
+        description: JSON by default; XML available with `xml=true`.
+      - name: GET or POST
+        description: Both GET and POST supported on the single endpoint for ad-hoc and server-to-server use.
+  - type: UseCases
+    data:
+      - name: Signup Validation
+        description: Block disposable, role, and invalid addresses at registration to keep user lists clean.
+      - name: Pre-Send List Cleaning
+        description: Run marketing lists through verification before a send to lower bounce rate and protect IP / domain reputation.
+      - name: Lead Quality Scoring
+        description: Score inbound leads on B2B vs B2C, role-account, and disposable signals to prioritize sales follow-up.
+      - name: ESP Bounce Prevention
+        description: Reduce hard bounces on transactional and marketing sends to maintain ISP reputation.
+      - name: Typo Recovery at Form Submit
+        description: Use `emailSuggested` to prompt users with the corrected address inline at signup.
+  - type: Integrations
+    data:
+      - name: Salesforce
+        description: Apex HTTP-callout integration for lead validation inside Salesforce.
+      - name: Google Sheets
+        description: Spreadsheet workflow for ad-hoc list verification.
+      - name: Microsoft Excel
+        description: Spreadsheet workflow for ad-hoc list verification.
+      - name: HubSpot
+        description: Marketing-platform integration for list cleansing.
+      - name: Pipedrive
+        description: CRM integration for inbound lead validation.
+  - type: SDK
+    data:
+      - name: Node.js
+      - name: Python
+      - name: PHP
+      - name: Ruby
+      - name: Go
+      - name: Java
+      - name: C# / .NET
+      - name: Rust
+      - name: Kotlin
+      - name: Swift
+      - name: TypeScript
+      - name: Elixir
+      - name: Dart / Flutter
+      - name: Scala
+      - name: Clojure
+      - name: F#
+      - name: VB.NET
+      - name: Perl
+      - name: Lua
+      - name: Julia
+      - name: R
+      - name: Crystal
+      - name: ObjectiveC
+      - name: ColdFusion
+      - name: ClassicASP
+      - name: PowerShell
+      - name: VBScript
+      - name: Delphi
+      - name: cURL / Bash
+      - name: OpenResty / NGINX
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

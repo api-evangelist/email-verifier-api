@@ -1,0 +1,80 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Email Verifier API
+providerId: email-verifier-api
+created: '2026-05-06'
+modified: '2026-05-06'
+reconciled: false
+tags:
+  - Email Verification
+  - Deliverability
+  - SMTP Check
+  - Rate Limiting
+description: |-
+  Email Verifier API does not publish numeric per-second / per-minute rate limits in its
+  v2 documentation. Throttling is enforced through the credit balance: every "Paid"
+  verification event consumes one credit, and the response returns the remaining balance
+  in the `remaining` field. The free web tool exposes a separate per-user daily allowance
+  of 5 verifications. Customers running high-volume traffic should coordinate with the
+  vendor through support@emailverifierapi.com to confirm any platform-side throughput
+  ceilings.
+sources:
+  - https://emailverifierapi.com/api-docs/
+  - https://emailverifierapi.com/free-email-verifier/
+  - https://emailverifierapi.com/pricing/
+notes: |-
+  Public documentation does not surface a fixed RPS or RPM. The credit balance acts as
+  the primary quota control. Sub-500ms typical response time is published as a service
+  characteristic but is not a contractual rate limit.
+responseCodes:
+  throttled: 429
+  serviceUnavailable: 503
+limits:
+  - name: Credit balance (paid events)
+    scope: api-key
+    metric: credit
+    limit: customer balance
+    notes: |-
+      Each Paid event (mailboxExists, mailboxDoesNotExist, mailboxIsFull) consumes one
+      credit. Free events (invalidSyntax, domainDoesNotExist, mxServerDoesNotExist,
+      isCatchall, isGreylisting, transientError) do not consume credits. The remaining
+      balance is returned on every response in the `remaining` field.
+  - name: Free tool daily checks
+    scope: visitor
+    metric: request
+    limit: 5
+    timeFrame: day
+    notes: |-
+      The browser-based free email verifier at /free-email-verifier/ allows 5 checks per
+      day per user before requiring registration for the API free tier (100 credits).
+  - name: Per-request execution time
+    scope: request
+    metric: seconds
+    limit: 'sub-500ms typical'
+    notes: |-
+      Published service characteristic. Each response returns an `execution` field with
+      the wall-clock duration of the verification, useful for client-side timeout tuning.
+policies:
+  - name: Credit-First Throttling
+    description: |-
+      The credit balance is the primary throttle. Monitor the `remaining` field returned
+      on every successful response to budget verification work and to top up before
+      hitting zero balance.
+  - name: Backoff
+    description: |-
+      Honor 429 (throttled) and 503 (service unavailable) responses with exponential
+      backoff and jitter. Retry transient (`status: transient`, `event: transientError`)
+      responses after a short delay rather than immediately.
+  - name: Auto-Refund
+    description: |-
+      Credits are not consumed for free events or for requests that fail on syntax / DNS /
+      MX. This effectively functions as an auto-refund for non-verifiable inputs.
+  - name: High-Volume Coordination
+    description: |-
+      For sustained high-throughput verification (bulk list cleanup, cron-driven
+      reverification), coordinate with support@emailverifierapi.com so that platform-side
+      ceilings can be confirmed and lifted if needed.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

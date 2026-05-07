@@ -1,0 +1,20 @@
+{
+  "status": "failed",
+  "event": "mailboxDoesNotExist",
+  "details": "The mailbox does not exist.",
+  "email": "not.a.real.user@gmail.com",
+  "emailSuggested": null,
+  "mailbox": "not.a.real.user",
+  "domain": "gmail.com",
+  "mxIp": "142.250.190.27",
+  "mxLocation": "US",
+  "possibleSpamtrap": false,
+  "isComplainer": false,
+  "isDisposable": false,
+  "isFreeService": true,
+  "isOffensive": false,
+  "isRoleAccount": false,
+  "isGibberish": false,
+  "remaining": "9941",
+  "execution": 0.412
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-structure.github.io/schema/v0/json-structure-core.json",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/email-verifier-api/main/json-structure/email-verifier-api-verification-result-structure.json",
+  "name": "VerificationResult",
+  "type": "object",
+  "description": "Structural definition of an Email Verifier API verification result.",
+  "properties": {
+    "status": {
+      "type": "string",
+      "description": "Top-level deliverability verdict (passed, failed, unknown, transient)."
+    },
+    "event": {
+      "type": "string",
+      "description": "Fine-grained event code (mailboxExists, mailboxDoesNotExist, isCatchall, isGreylisting, etc.)."
+    },
+    "details": { "type": "string", "description": "Human-readable explanation of the event." },
+    "email": { "type": "string", "description": "Email address verified." },
+    "emailSuggested": { "type": "string", "description": "Suggested correction for misspelled domains." },
+    "mailbox": { "type": "string", "description": "Local part of the address." },
+    "domain": { "type": "string", "description": "Domain part of the address." },
+    "mxIp": { "type": "string", "description": "IPv4 address of the MX server." },
+    "mxLocation": { "type": "string", "description": "ISO country code where the MX server is hosted." },
+    "possibleSpamtrap": { "type": "boolean", "description": "Spam-trap indicator." },
+    "isComplainer": { "type": "boolean", "description": "Frequent-complainer indicator." },
+    "isDisposable": { "type": "boolean", "description": "Disposable address indicator." },
+    "isFreeService": { "type": "boolean", "description": "Free consumer service indicator." },
+    "isOffensive": { "type": "boolean", "description": "Offensive content indicator." },
+    "isRoleAccount": { "type": "boolean", "description": "Role-account indicator." },
+    "isGibberish": { "type": "boolean", "description": "Gibberish / machine-generated indicator." },
+    "remaining": { "type": "string", "description": "Remaining credit balance." },
+    "execution": { "type": "number", "description": "Verification execution time in seconds." }
+  },
+  "required": [
+    "status",
+    "event",
+    "details",
+    "email",
+    "mailbox",
+    "domain",
+    "remaining",
+    "execution"
+  ]
+}
