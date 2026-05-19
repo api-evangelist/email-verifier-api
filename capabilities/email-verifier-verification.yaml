@@ -1,0 +1,107 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Email Verifier API — Verification
+  description: 'Email Verifier API — Verification. 2 operations. Lead operation: Verify Email Address. Self-contained Naftiko
+    capability covering one Email Verifier Api business surface.'
+  tags:
+  - Email Verifier Api
+  - Verification
+  created: '2026-05-19'
+  modified: '2026-05-19'
+binds:
+- namespace: env
+  keys:
+    EMAIL_VERIFIER_API_API_KEY: EMAIL_VERIFIER_API_API_KEY
+capability:
+  consumes:
+  - type: http
+    namespace: email-verifier-verification
+    baseUri: https://emailverifierapi.com/v2
+    description: Email Verifier API — Verification business capability. Self-contained, no shared references.
+    resources:
+    - name: root
+      path: /
+      operations:
+      - name: verifyemailget
+        method: GET
+        description: Verify Email Address
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: verifyemailpost
+        method: POST
+        description: Verify Email Address (POST)
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          description: Request body (JSON).
+          required: true
+    authentication:
+      type: apikey
+      key: apiKey
+      value: '{{env.EMAIL_VERIFIER_API_API_KEY}}'
+      placement: query
+  exposes:
+  - type: rest
+    namespace: email-verifier-verification-rest
+    port: 8080
+    description: REST adapter for Email Verifier API — Verification. One Spectral-compliant resource per consumed operation,
+      prefixed with /v1.
+    resources:
+    - path: /v1
+      name: root
+      description: REST surface for root.
+      operations:
+      - method: GET
+        name: verifyemailget
+        description: Verify Email Address
+        call: email-verifier-verification.verifyemailget
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: verifyemailpost
+        description: Verify Email Address (POST)
+        call: email-verifier-verification.verifyemailpost
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: email-verifier-verification-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Email Verifier API — Verification. One tool per consumed operation, routed inline through
+      this capability's consumes block.
+    tools:
+    - name: verify-email-address
+      description: Verify Email Address
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: true
+      call: email-verifier-verification.verifyemailget
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: verify-email-address-post
+      description: Verify Email Address (POST)
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: email-verifier-verification.verifyemailpost
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
