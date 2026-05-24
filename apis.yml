@@ -231,6 +231,8 @@ common:
   - name: Delphi
   - name: cURL / Bash
   - name: OpenResty / NGINX
+- type: LLMsTxt
+  url: https://emailverifierapi.com/llms.txt
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
