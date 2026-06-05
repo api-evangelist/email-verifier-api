@@ -1,65 +1,112 @@
 # Email Verifier API (email-verifier-api)
 
-Real-time email verification API offering a 16-point verification engine that combines
-syntax checking, DNS / MX lookups, SMTP handshakes, mailbox existence probing, catch-all
-and greylisting detection, disposable address detection, role-account flagging, spam-trap
-and complainer detection, gibberish and offensive-language scanning, B2B / B2C
-classification, typo correction, and SMTP-provider identification.
+Email Verifier API is a real-time email verification service offering a 16-point engine
+that validates deliverability through syntax checking, DNS / MX lookups, real-time SMTP
+handshakes, mailbox existence probing, catch-all and greylisting detection, disposable
+address detection, role-account flagging, spam-trap and complainer detection, gibberish
+and offensive-language scanning, B2B / B2C classification, typo correction, and SMTP
+provider identification. The service is delivered as a single REST endpoint that
+accepts GET or POST requests, returns JSON or XML, and meters usage against a
+credit-pack balance that never expires. The product targets growth teams, ESPs, and
+lead-generation operators that need to eliminate hard bounces and protect sender
+reputation before they send.
 
-- **Provider site:** https://emailverifierapi.com/
-- **Documentation:** https://emailverifierapi.com/api-docs/
-- **Pricing:** https://emailverifierapi.com/pricing/
-- **Sign up:** https://emailverifierapi.com/register/
-- **Free tool:** https://emailverifierapi.com/free-email-verifier/
-- **Inbox issue:** [#887](https://github.com/api-evangelist/inbox/issues/887)
+**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/apis.yml)
 
-## API Surface
+## Scope
 
-Single endpoint at `https://emailverifierapi.com/v2/` accepting GET or POST. API key is
-passed as the `apiKey` query parameter. Responses are JSON by default, or XML when
-`xml=true` is appended. Each successful response carries the customer's `remaining`
-credit balance and `execution` time in seconds.
-
-## Artifacts
-
-| Artifact | Path |
-|---|---|
-| API index | `apis.yml` |
-| OpenAPI 3.1 spec | `openapi/email-verifier-api-openapi.yml` |
-| JSON Schema | `json-schema/email-verifier-api-verification-result-schema.json` |
-| JSON Structure | `json-structure/email-verifier-api-verification-result-structure.json` |
-| JSON-LD context | `json-ld/email-verifier-api-context.jsonld` |
-| Examples | `examples/` |
-| Spectral ruleset | `rules/email-verifier-api-rules.yml` |
-| Naftiko capability | `capabilities/email-verification.yaml` |
-| Vocabulary | `vocabulary/email-verifier-api-vocabulary.yml` |
-| Plans (API Commons 0.1) | `plans/email-verifier-api-plans-pricing.yml` |
-| Rate Limits (API Commons 0.1) | `rate-limits/email-verifier-api-rate-limits.yml` |
-| FinOps (FOCUS 1.3) | `finops/email-verifier-api-finops.yml` |
-
-## Verification Outcomes
-
-| Status | Event | Billed |
-|---|---|---|
-| `passed` | `mailboxExists` | Paid |
-| `failed` | `mailboxDoesNotExist` | Paid |
-| `failed` | `mailboxIsFull` | Paid |
-| `failed` | `domainDoesNotExist` | Free |
-| `failed` | `mxServerDoesNotExist` | Free |
-| `failed` | `invalidSyntax` | Free |
-| `unknown` | `isCatchall` | Free |
-| `unknown` | `isGreylisting` | Free |
-| `transient` | `transientError` | Free |
-
-## Pricing Snapshot
-
-Pay-as-you-go credit packs that never expire. Free tier of 100 credits at signup; no
-credit card required. Per-email price scales from $0.0080 at 1,000 credits down to
-$0.0013 at 10,000,000 credits. Enterprise volume contracts available.
+- **Type:** Index
 
 ## Tags
 
-`Email Verification`, `Deliverability`, `SMTP Check`, `Bounce Prevention`,
-`Lead Validation`, `Disposable Detection`, `Spam Trap Detection`,
-`Catch-All Detection`, `Greylisting`, `Role Account Detection`, `Typo Suggestion`,
-`B2B Lead Scoring`.
+- Email Verification
+- Deliverability
+- SMTP Check
+- Bounce Prevention
+- Lead Validation
+- Disposable Detection
+- Spam Trap Detection
+- Catch-All Detection
+- Greylisting
+- Role Account Detection
+- Typo Suggestion
+- B2B Lead Scoring
+
+## Timestamps
+
+- **Created:** 2026-05-06
+- **Modified:** 2026-05-19
+
+## APIs
+
+### Email Verifier API Verification
+
+Real-time email-address verification endpoint. Single resource at
+https://emailverifierapi.com/v2/ accepting GET or POST. Returns a top-level
+deliverability status (passed / failed / unknown / transient), a granular event
+code (mailboxExists, mailboxDoesNotExist, mailboxIsFull, domainDoesNotExist,
+mxServerDoesNotExist, invalidSyntax, isCatchall, isGreylisting, transientError),
+and a set of intelligence flags (isDisposable, isRoleAccount, isFreeService,
+possibleSpamtrap, isComplainer, isOffensive, isGibberish), along with the MX
+server IP and ISO country, a typo-corrected address suggestion, the remaining
+credit balance, and the wall-clock execution time. Authentication is by API key
+passed as the `apiKey` query parameter.
+
+- **Human URL:** [https://emailverifierapi.com/api-docs/](https://emailverifierapi.com/api-docs/)
+- **Base URL:** `https://emailverifierapi.com/v2/`
+
+#### Tags
+
+- Email Verification
+- Deliverability
+- SMTP Check
+- Bounce Prevention
+
+#### Properties
+
+- [Documentation](https://emailverifierapi.com/api-docs/)
+- [Sign Up](https://emailverifierapi.com/register/)
+- [Pricing](https://emailverifierapi.com/pricing/)
+- [Terms of Service](https://emailverifierapi.com/terms-of-service/)
+- [Privacy Policy](https://emailverifierapi.com/privacy-policy/)
+- [Login](https://emailverifierapi.com/login/)
+- [Blog](https://emailverifierapi.com/blog/)
+- [Integrations](https://emailverifierapi.com/integrations/)
+- [Free Tool](https://emailverifierapi.com/free-email-verifier/)
+- [Directory](https://emailverifierapi.com/verify-company-emails/)
+- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/openapi/email-verifier-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
+- [JSON Schema](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/json-schema/email-verifier-api-verification-result-schema.json) — [JSON Schema](https://json-schema.org/specification)
+- [JSON Structure](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/json-structure/email-verifier-api-verification-result-structure.json)
+- [JSON-LD](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/json-ld/email-verifier-api-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
+- [Spectral Rules](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/rules/email-verifier-api-rules.yml)
+- [Vocabulary](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/vocabulary/email-verifier-api-vocabulary.yml)
+- [Plans](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/plans/email-verifier-api-plans-pricing.yml)
+- [Rate Limits](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/rate-limits/email-verifier-api-rate-limits.yml)
+- [Fin Ops](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/finops/email-verifier-api-finops.yml)
+- [Postman Collection](collections/email-verifier-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
+- [Open Collection](collections/email-verifier-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+
+## Common Properties
+
+- [Documentation](https://emailverifierapi.com/api-docs/)
+- [Sign Up](https://emailverifierapi.com/register/)
+- [Login](https://emailverifierapi.com/login/)
+- [Pricing](https://emailverifierapi.com/pricing/)
+- [Blog](https://emailverifierapi.com/blog/)
+- [Terms of Service](https://emailverifierapi.com/terms-of-service/)
+- [Privacy Policy](https://emailverifierapi.com/privacy-policy/)
+- [Integrations](https://emailverifierapi.com/integrations/)
+- [Free Tool](https://emailverifierapi.com/free-email-verifier/)
+- [Directory](https://emailverifierapi.com/verify-company-emails/)
+- [Support](mailto:support@emailverifierapi.com)
+- [Authentication](undefined)
+- [Features](undefined)
+- [Use Cases](undefined)
+- [Integrations](undefined)
+- [SDK](undefined)
+- [L L Ms Txt](https://emailverifierapi.com/llms.txt)
+
+## Maintainers
+
+**FN:** Kin Lane
+**Email:** kin@apievangelist.com
