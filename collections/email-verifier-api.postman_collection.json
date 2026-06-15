@@ -1,0 +1,435 @@
+{
+  "item": [
+    {
+      "id": "b3bdc7a4-015c-49c1-bda0-7ce23772fea2",
+      "name": "Verification",
+      "description": {
+        "content": "Real-time email-address verification operations.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "db8d115b-126c-4cfc-beb9-ac2ed52dc2eb",
+          "name": "Verify Email Address",
+          "request": {
+            "name": "Verify Email Address",
+            "description": {
+              "content": "Run the 16-point verification engine against a single email address and return a\ndeliverability verdict (`status`), a granular event code (`event`), a human-readable\nexplanation (`details`), and a set of intelligence flags (disposable, role account,\nfree service, spam-trap, gibberish, offensive). When the input domain is misspelled\na corrected suggestion is returned in `emailSuggested`.\n\nThe GET form is convenient for ad-hoc validation, link-time integrations, and\nspreadsheets / no-code tools. Use POST for higher-volume server-to-server traffic\nwhere the email payload should not appear in URL strings or access logs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "apiKey",
+                  "value": "<string>",
+                  "description": "(Required) Customer API key."
+                },
+                {
+                  "disabled": false,
+                  "key": "email",
+                  "value": "<email>",
+                  "description": "(Required) Email address to verify."
+                },
+                {
+                  "disabled": false,
+                  "key": "xml",
+                  "value": "false",
+                  "description": "Set to `true` to receive an XML response payload instead of JSON."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f7cf0d34-8357-45b8-a868-7cf463514f2b",
+              "name": "Verification result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "email",
+                      "value": "john.doe@example.com"
+                    },
+                    {
+                      "key": "xml",
+                      "value": "false"
+                    },
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"passed\",\n  \"event\": \"mailboxExists\",\n  \"details\": \"The mailbox exists.\",\n  \"email\": \"john.doe@gmail.com\",\n  \"emailSuggested\": null,\n  \"mailbox\": \"john.doe\",\n  \"domain\": \"gmail.com\",\n  \"mxIp\": \"142.250.190.27\",\n  \"mxLocation\": \"US\",\n  \"possibleSpamtrap\": false,\n  \"isComplainer\": false,\n  \"isDisposable\": false,\n  \"isFreeService\": true,\n  \"isOffensive\": false,\n  \"isRoleAccount\": false,\n  \"isGibberish\": false,\n  \"remaining\": \"9942\",\n  \"execution\": 0.368\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "96730cfd-0837-47ea-aa8f-0ed19ba3824f",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "email",
+                      "value": "john.doe@example.com"
+                    },
+                    {
+                      "key": "xml",
+                      "value": "false"
+                    },
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"failed\",\n  \"event\": \"invalidApiKey\",\n  \"details\": \"The supplied API key is invalid or has no remaining credits.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1c24c271-c38b-4e86-8ad2-7f802392bb09",
+              "name": "Insufficient credits.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "email",
+                      "value": "john.doe@example.com"
+                    },
+                    {
+                      "key": "xml",
+                      "value": "false"
+                    },
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Payment Required",
+              "code": 402,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"failed\",\n  \"event\": \"invalidApiKey\",\n  \"details\": \"The supplied API key is invalid or has no remaining credits.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "83404c1e-3924-427a-96df-897735e289a1",
+              "name": "Rate limit exceeded.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "email",
+                      "value": "john.doe@example.com"
+                    },
+                    {
+                      "key": "xml",
+                      "value": "false"
+                    },
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"failed\",\n  \"event\": \"invalidApiKey\",\n  \"details\": \"The supplied API key is invalid or has no remaining credits.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "679e9b0a-9702-4c26-9f84-82e914bd5b0c",
+          "name": "Verify Email Address (POST)",
+          "request": {
+            "name": "Verify Email Address (POST)",
+            "description": {
+              "content": "Same as the GET form but accepts the email address either as a query parameter or\nas a form-encoded body. Recommended for production server-to-server usage so that\naddresses do not leak into proxy access logs.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "apiKey",
+                  "value": "<string>",
+                  "description": "(Required) Customer API key."
+                },
+                {
+                  "disabled": false,
+                  "key": "xml",
+                  "value": "false",
+                  "description": "Set to `true` to receive an XML response payload instead of JSON."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "email",
+                  "value": "<email>",
+                  "description": "(Required) Email address to verify."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b53edacd-ee32-4dfe-ba2c-292e72ef4aae",
+              "name": "Verification result.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "apiKey",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "xml",
+                      "value": "false"
+                    },
+                    {
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Email address to verify.",
+                        "type": "text/plain"
+                      },
+                      "key": "email",
+                      "value": "john.doe@example.com"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"failed\",\n  \"event\": \"invalidSyntax\",\n  \"details\": \"The mailbox exists.\",\n  \"email\": \"john.doe@example.com\",\n  \"mailbox\": \"john.doe\",\n  \"domain\": \"example.com\",\n  \"remaining\": \"9942\",\n  \"execution\": 0.368,\n  \"emailSuggested\": \"john.doe@gmail.com\",\n  \"mxIp\": \"142.250.190.27\",\n  \"mxLocation\": \"US\",\n  \"possibleSpamtrap\": false,\n  \"isComplainer\": true,\n  \"isDisposable\": false,\n  \"isFreeService\": true,\n  \"isOffensive\": false,\n  \"isRoleAccount\": true,\n  \"isGibberish\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://emailverifierapi.com/v2",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "apiKey"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "query"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f2743141-4805-4288-b7ca-1a4abd506838",
+    "name": "Email Verifier API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Real-time email verification API offering a 16-point verification engine that combines\nsyntax checking, MX record lookup, SMTP handshake, mailbox existence probing, catch-all\ndetection, greylisting handling, disposable address detection, role-account flagging,\nspam-trap detection, gibberish detection, and B2B / B2C classification. The service is\ndesigned to eliminate hard bounces, protect sender reputation, and improve deliverability\nfor marketing, transactional, and lead-generation email programs.\n\nThe API is delivered as a single endpoint at `https://emailverifierapi.com/v2/`. The\nendpoint accepts both GET and POST requests and returns either JSON (default) or XML\n(when `xml=true` is passed). Authentication is performed by sending the customer's\n`apiKey` as a query parameter.\n\nVerification is metered against a credit balance. Credits are consumed only for\n\"Paid\" events (mailbox-level results that required SMTP probing). Lightweight,\ndeterministic events such as syntax errors or DNS misses are returned for free and\ndo not consume credits. Each successful response includes a `remaining` field with\nthe up-to-date credit balance and an `execution` field with the wall-clock cost of\nthe verification.\n\nContact Support:\n Name: Email Verifier API Support\n Email: support@emailverifierapi.com",
+      "type": "text/plain"
+    }
+  }
+}

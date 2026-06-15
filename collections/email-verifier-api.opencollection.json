@@ -1,0 +1,91 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Email Verifier API",
+    "version": "2.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "apiKey",
+      "value": "{{apiKey}}",
+      "placement": "query"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Verification",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Verify Email Address",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://emailverifierapi.com/v2/",
+            "params": [
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "Customer API key."
+              },
+              {
+                "name": "email",
+                "value": "",
+                "type": "query",
+                "description": "Email address to verify."
+              },
+              {
+                "name": "xml",
+                "value": "",
+                "type": "query",
+                "description": "Set to `true` to receive an XML response payload instead of JSON."
+              }
+            ]
+          },
+          "docs": "Run the 16-point verification engine against a single email address and return a\ndeliverability verdict (`status`), a granular event code (`event`), a human-readable\nexplanation (`details`), and a set of intelligence flags (disposable, role account,\nfree service, spam-trap, gibberish, offensive). When the input domain is misspelled\na corrected suggestion is returned in `emailSuggested`.\n\nThe GET form is convenient for ad-hoc validation, link-time integrations, and\nspreadsheets / no-code tools. U"
+        },
+        {
+          "info": {
+            "name": "Verify Email Address (POST)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://emailverifierapi.com/v2/",
+            "params": [
+              {
+                "name": "apiKey",
+                "value": "",
+                "type": "query",
+                "description": "Customer API key."
+              },
+              {
+                "name": "xml",
+                "value": "",
+                "type": "query",
+                "description": "Set to `true` to receive an XML response payload instead of JSON."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "email",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Same as the GET form but accepts the email address either as a query parameter or\nas a form-encoded body. Recommended for production server-to-server usage so that\naddresses do not leak into proxy access logs."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
