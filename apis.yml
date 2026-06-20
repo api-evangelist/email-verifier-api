@@ -2,7 +2,7 @@ aid: email-verifier-api
 url: https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/apis.yml
 name: Email Verifier API
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 description: |-
   Email Verifier API is a real-time email verification service offering a 16-point engine
   that validates deliverability through syntax checking, DNS / MX lookups, real-time SMTP
@@ -45,7 +45,7 @@ apis:
       server IP and ISO country, a typo-corrected address suggestion, the remaining
       credit balance, and the wall-clock execution time. Authentication is by API key
       passed as the `apiKey` query parameter.
-    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
     humanURL: https://emailverifierapi.com/api-docs/
     baseURL: https://emailverifierapi.com/v2/
     version: v2
