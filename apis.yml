@@ -57,7 +57,7 @@ apis:
     properties:
       - type: Documentation
         url: https://emailverifierapi.com/api-docs/
-      - type: SignUp
+      - type: Signup
         url: https://emailverifierapi.com/register/
       - type: Pricing
         url: https://emailverifierapi.com/pricing/
@@ -117,7 +117,7 @@ apis:
 common:
   - type: Documentation
     url: https://emailverifierapi.com/api-docs/
-  - type: SignUp
+  - type: Signup
     url: https://emailverifierapi.com/register/
   - type: Login
     url: https://emailverifierapi.com/login/
@@ -193,7 +193,7 @@ common:
         description: Marketing-platform integration for list cleansing.
       - name: Pipedrive
         description: CRM integration for inbound lead validation.
-  - type: SDK
+  - type: SDKs
     data:
       - name: Node.js
       - name: Python
@@ -225,7 +225,7 @@ common:
       - name: Delphi
       - name: cURL / Bash
       - name: OpenResty / NGINX
-  - type: LLMsTxt
+  - type: LlmsText
     url: https://emailverifierapi.com/llms.txt
 maintainers:
   - FN: Kin Lane

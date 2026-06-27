@@ -2,27 +2,13 @@
   "repo": "email-verifier-api",
   "feeds": [
     {
-      "source": "https://emailverifierapi.com/blog/feed/",
-      "feed_url": "https://emailverifierapi.com/blog/feed/",
-      "title": "",
-      "saved": 0,
-      "method": "none"
-    },
-    {
-      "source": "https://emailverifierapi.com/login/",
-      "feed_url": "https://emailverifierapi.com/login/",
-      "title": "",
-      "saved": 0,
-      "method": "none"
-    },
-    {
-      "source": "https://emailverifierapi.com/pricing/",
-      "feed_url": "https://emailverifierapi.com/pricing/",
-      "title": "",
-      "saved": 0,
-      "method": "none"
+      "source": "https://emailverifierapi.com/blog/",
+      "feed_url": "",
+      "saved": 2,
+      "method": "agent-scrape"
     }
   ],
-  "post_count": 1,
-  "fetched": "2026-06-14T20:42:17Z"
+  "fetched": "2026-06-27T12:38:55Z",
+  "post_count": 6,
+  "agent_pulled": "2026-06-27"
 }
