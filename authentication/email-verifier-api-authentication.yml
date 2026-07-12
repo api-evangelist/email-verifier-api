@@ -1,0 +1,19 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/email-verifier-api-openapi.yml
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - query
+schemes:
+- name: apiKeyQuery
+  type: apiKey
+  in: query
+  parameter: apiKey
+  description: |-
+    API key issued at signup. Pass as the `apiKey` query string parameter on every
+    request. Treat the key as a credential and rotate from the customer dashboard
+    if exposed.
+  sources:
+  - openapi/email-verifier-api-openapi.yml

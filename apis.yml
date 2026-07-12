@@ -115,6 +115,10 @@ apis:
       - FN: Email Verifier API Support
         email: support@emailverifierapi.com
 common:
+  - type: DomainSecurity
+    url: security/email-verifier-api-domain-security.yml
+  - type: Authentication
+    url: authentication/email-verifier-api-authentication.yml
   - type: Documentation
     url: https://emailverifierapi.com/api-docs/
   - type: Signup
