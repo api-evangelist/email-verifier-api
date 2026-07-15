@@ -115,6 +115,8 @@ apis:
       - FN: Email Verifier API Support
         email: support@emailverifierapi.com
 common:
+  - type: AgenticAccess
+    url: agentic-access/email-verifier-api-agentic-access.yml
   - type: DomainSecurity
     url: security/email-verifier-api-domain-security.yml
   - type: Authentication
