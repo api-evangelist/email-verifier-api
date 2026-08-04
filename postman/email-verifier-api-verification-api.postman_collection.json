@@ -1,0 +1,433 @@
+{
+  "info": {
+    "_postman_id": "16cb0ffb-64df-4302-847d-b9b60493f7bf",
+    "name": "Email Verifier Verification API",
+    "description": "Real-time email verification API offering a 16-point verification engine that combines\nsyntax checking, MX record lookup, SMTP handshake, mailbox existence probing, catch-all\ndetection, greylisting handling, disposable address detection, role-account flagging,\nspam-trap detection, gibberish detection, and B2B / B2C classification. The service is\ndesigned to eliminate hard bounces, protect sender reputation, and improve deliverability\nfor marketing, transactional, and lead-generation email programs.\n\nThe API is delivered as a single endpoint at `https://emailverifierapi.com/v2/`. The\nendpoint accepts both GET and POST requests and returns either JSON (default) or XML\n(when `xml=true` is passed). Authentication is performed by sending the customer's\n`apiKey` as a query parameter.\n\nVerification is metered against a credit balance. Credits are consumed only for\n\"Paid\" events (mailbox-level results that required SMTP probing). Lightweight,\ndeterministic events such as syntax errors or DNS misses are returned for free and\ndo not consume credits. Each successful response includes a `remaining` field with\nthe up-to-date credit balance and an `execution` field with the wall-clock cost of\nthe verification.\n\nContact Support:\n Name: Email Verifier API Support\n Email: support@emailverifierapi.com",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T01:33:49.000Z",
+    "updatedAt": "2026-07-28T01:33:50.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-16cb0ffb-64df-4302-847d-b9b60493f7bf"
+  },
+  "item": [
+    {
+      "name": "/",
+      "item": [
+        {
+          "name": "Verify Email Address",
+          "id": "d80e0c70-c22f-4af6-a721-9dede34578df",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/?apiKey=<string>&email=<email>&xml=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ],
+              "query": [
+                {
+                  "description": "(Required) Customer API key.",
+                  "key": "apiKey",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Email address to verify.",
+                  "key": "email",
+                  "value": "<email>"
+                },
+                {
+                  "description": "Set to `true` to receive an XML response payload instead of JSON.",
+                  "key": "xml",
+                  "value": "false"
+                }
+              ]
+            },
+            "description": "Run the 16-point verification engine against a single email address and return a\ndeliverability verdict (`status`), a granular event code (`event`), a human-readable\nexplanation (`details`), and a set of intelligence flags (disposable, role account,\nfree service, spam-trap, gibberish, offensive). When the input domain is misspelled\na corrected suggestion is returned in `emailSuggested`.\n\nThe GET form is convenient for ad-hoc validation, link-time integrations, and\nspreadsheets / no-code tools. Use POST for higher-volume server-to-server traffic\nwhere the email payload should not appear in URL strings or access logs."
+          },
+          "response": [
+            {
+              "id": "a4c522e7-65f4-43c1-bf10-441ca207d2ab",
+              "name": "Verification result.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/?apiKey=<API Key>&email=<email>&xml=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Customer API key.",
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    },
+                    {
+                      "description": "(Required) Email address to verify.",
+                      "key": "email",
+                      "value": "<email>"
+                    },
+                    {
+                      "description": "Set to `true` to receive an XML response payload instead of JSON.",
+                      "key": "xml",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"passed\",\n  \"event\": \"mailboxExists\",\n  \"details\": \"<string>\",\n  \"email\": \"<email>\",\n  \"mailbox\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"remaining\": \"<string>\",\n  \"execution\": \"<float>\",\n  \"emailSuggested\": \"<string>\",\n  \"mxIp\": \"<string>\",\n  \"mxLocation\": \"<string>\",\n  \"possibleSpamtrap\": \"<boolean>\",\n  \"isComplainer\": \"<boolean>\",\n  \"isDisposable\": \"<boolean>\",\n  \"isFreeService\": \"<boolean>\",\n  \"isOffensive\": \"<boolean>\",\n  \"isRoleAccount\": \"<boolean>\",\n  \"isGibberish\": \"<boolean>\"\n}",
+              "createdAt": "2026-07-28T01:33:50.000Z",
+              "updatedAt": "2026-07-28T01:33:50.000Z",
+              "uid": "35240-a4c522e7-65f4-43c1-bf10-441ca207d2ab"
+            },
+            {
+              "id": "7e9be16f-29d1-4061-aae4-7b0bb5b463c9",
+              "name": "Missing or invalid API key.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/?apiKey=<API Key>&email=<email>&xml=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Customer API key.",
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    },
+                    {
+                      "description": "(Required) Email address to verify.",
+                      "key": "email",
+                      "value": "<email>"
+                    },
+                    {
+                      "description": "Set to `true` to receive an XML response payload instead of JSON.",
+                      "key": "xml",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<string>\",\n  \"event\": \"<string>\",\n  \"details\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:33:50.000Z",
+              "updatedAt": "2026-07-28T01:33:50.000Z",
+              "uid": "35240-7e9be16f-29d1-4061-aae4-7b0bb5b463c9"
+            },
+            {
+              "id": "6fb800e6-58e0-4976-bd03-ac313469ba7d",
+              "name": "Insufficient credits.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/?apiKey=<API Key>&email=<email>&xml=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Customer API key.",
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    },
+                    {
+                      "description": "(Required) Email address to verify.",
+                      "key": "email",
+                      "value": "<email>"
+                    },
+                    {
+                      "description": "Set to `true` to receive an XML response payload instead of JSON.",
+                      "key": "xml",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "Payment Required",
+              "code": 402,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<string>\",\n  \"event\": \"<string>\",\n  \"details\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:33:50.000Z",
+              "updatedAt": "2026-07-28T01:33:50.000Z",
+              "uid": "35240-6fb800e6-58e0-4976-bd03-ac313469ba7d"
+            },
+            {
+              "id": "e2c8e5c7-a41d-4cbe-8541-c5f9d762236f",
+              "name": "Rate limit exceeded.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/?apiKey=<API Key>&email=<email>&xml=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Customer API key.",
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    },
+                    {
+                      "description": "(Required) Email address to verify.",
+                      "key": "email",
+                      "value": "<email>"
+                    },
+                    {
+                      "description": "Set to `true` to receive an XML response payload instead of JSON.",
+                      "key": "xml",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"<string>\",\n  \"event\": \"<string>\",\n  \"details\": \"<string>\"\n}",
+              "createdAt": "2026-07-28T01:33:50.000Z",
+              "updatedAt": "2026-07-28T01:33:50.000Z",
+              "uid": "35240-e2c8e5c7-a41d-4cbe-8541-c5f9d762236f"
+            }
+          ],
+          "createdAt": "2026-07-28T01:33:50.000Z",
+          "updatedAt": "2026-07-28T01:33:50.000Z",
+          "uid": "35240-d80e0c70-c22f-4af6-a721-9dede34578df"
+        },
+        {
+          "name": "Verify Email Address (POST)",
+          "id": "2331ec85-5d03-4ab5-bc9f-253c333b6084",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "description": "(Required) Email address to verify.",
+                  "key": "email",
+                  "value": "<email>"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/?apiKey=<string>&xml=false",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ],
+              "query": [
+                {
+                  "description": "(Required) Customer API key.",
+                  "key": "apiKey",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Set to `true` to receive an XML response payload instead of JSON.",
+                  "key": "xml",
+                  "value": "false"
+                }
+              ]
+            },
+            "description": "Same as the GET form but accepts the email address either as a query parameter or\nas a form-encoded body. Recommended for production server-to-server usage so that\naddresses do not leak into proxy access logs."
+          },
+          "response": [
+            {
+              "id": "90a0a403-4fa2-4879-b5ee-6afd80089957",
+              "name": "Verification result.",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "(Required) Email address to verify.",
+                      "key": "email",
+                      "value": "<email>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/?apiKey=<API Key>&xml=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Customer API key.",
+                      "key": "apiKey",
+                      "value": "<API Key>"
+                    },
+                    {
+                      "description": "Set to `true` to receive an XML response payload instead of JSON.",
+                      "key": "xml",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"status\": \"passed\",\n  \"event\": \"mailboxExists\",\n  \"details\": \"<string>\",\n  \"email\": \"<email>\",\n  \"mailbox\": \"<string>\",\n  \"domain\": \"<string>\",\n  \"remaining\": \"<string>\",\n  \"execution\": \"<float>\",\n  \"emailSuggested\": \"<string>\",\n  \"mxIp\": \"<string>\",\n  \"mxLocation\": \"<string>\",\n  \"possibleSpamtrap\": \"<boolean>\",\n  \"isComplainer\": \"<boolean>\",\n  \"isDisposable\": \"<boolean>\",\n  \"isFreeService\": \"<boolean>\",\n  \"isOffensive\": \"<boolean>\",\n  \"isRoleAccount\": \"<boolean>\",\n  \"isGibberish\": \"<boolean>\"\n}",
+              "createdAt": "2026-07-28T01:33:50.000Z",
+              "updatedAt": "2026-07-28T01:33:50.000Z",
+              "uid": "35240-90a0a403-4fa2-4879-b5ee-6afd80089957"
+            }
+          ],
+          "createdAt": "2026-07-28T01:33:50.000Z",
+          "updatedAt": "2026-07-28T01:33:50.000Z",
+          "uid": "35240-2331ec85-5d03-4ab5-bc9f-253c333b6084"
+        }
+      ],
+      "id": "3493c113-0440-4692-b958-8337132346f4",
+      "createdAt": "2026-07-28T01:33:50.000Z",
+      "updatedAt": "2026-07-28T01:33:50.000Z",
+      "uid": "35240-3493c113-0440-4692-b958-8337132346f4"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "apiKey",
+        "type": "string"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "query",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://emailverifierapi.com/v2"
+    }
+  ]
+}

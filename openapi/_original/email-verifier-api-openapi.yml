@@ -1,0 +1,353 @@
+openapi: 3.1.0
+info:
+  title: Email Verifier API
+  version: '2.0'
+  description: |-
+    Real-time email verification API offering a 16-point verification engine that combines
+    syntax checking, MX record lookup, SMTP handshake, mailbox existence probing, catch-all
+    detection, greylisting handling, disposable address detection, role-account flagging,
+    spam-trap detection, gibberish detection, and B2B / B2C classification. The service is
+    designed to eliminate hard bounces, protect sender reputation, and improve deliverability
+    for marketing, transactional, and lead-generation email programs.
+
+    The API is delivered as a single endpoint at `https://emailverifierapi.com/v2/`. The
+    endpoint accepts both GET and POST requests and returns either JSON (default) or XML
+    (when `xml=true` is passed). Authentication is performed by sending the customer's
+    `apiKey` as a query parameter.
+
+    Verification is metered against a credit balance. Credits are consumed only for
+    "Paid" events (mailbox-level results that required SMTP probing). Lightweight,
+    deterministic events such as syntax errors or DNS misses are returned for free and
+    do not consume credits. Each successful response includes a `remaining` field with
+    the up-to-date credit balance and an `execution` field with the wall-clock cost of
+    the verification.
+  contact:
+    name: Email Verifier API Support
+    email: support@emailverifierapi.com
+    url: https://emailverifierapi.com/
+  termsOfService: https://emailverifierapi.com/terms-of-service/
+  license:
+    name: Proprietary
+    url: https://emailverifierapi.com/terms-of-service/
+servers:
+  - url: https://emailverifierapi.com/v2
+    description: Production
+tags:
+  - name: Verification
+    description: Real-time email-address verification operations.
+security:
+  - apiKeyQuery: []
+paths:
+  /:
+    get:
+      tags:
+        - Verification
+      operationId: verifyEmailGet
+      summary: Verify Email Address
+      description: |-
+        Run the 16-point verification engine against a single email address and return a
+        deliverability verdict (`status`), a granular event code (`event`), a human-readable
+        explanation (`details`), and a set of intelligence flags (disposable, role account,
+        free service, spam-trap, gibberish, offensive). When the input domain is misspelled
+        a corrected suggestion is returned in `emailSuggested`.
+
+        The GET form is convenient for ad-hoc validation, link-time integrations, and
+        spreadsheets / no-code tools. Use POST for higher-volume server-to-server traffic
+        where the email payload should not appear in URL strings or access logs.
+      parameters:
+        - $ref: '#/components/parameters/ApiKey'
+        - $ref: '#/components/parameters/Email'
+        - $ref: '#/components/parameters/Xml'
+      responses:
+        '200':
+          description: Verification result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationResult'
+              examples:
+                mailboxExists:
+                  $ref: '#/components/examples/MailboxExists'
+                mailboxDoesNotExist:
+                  $ref: '#/components/examples/MailboxDoesNotExist'
+                isDisposable:
+                  $ref: '#/components/examples/IsDisposable'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/VerificationResult'
+        '401':
+          description: Missing or invalid API key.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '402':
+          description: Insufficient credits.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate limit exceeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - Verification
+      operationId: verifyEmailPost
+      summary: Verify Email Address (POST)
+      description: |-
+        Same as the GET form but accepts the email address either as a query parameter or
+        as a form-encoded body. Recommended for production server-to-server usage so that
+        addresses do not leak into proxy access logs.
+      parameters:
+        - $ref: '#/components/parameters/ApiKey'
+        - $ref: '#/components/parameters/Xml'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: Email address to verify.
+                  example: john.doe@example.com
+      responses:
+        '200':
+          description: Verification result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerificationResult'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/VerificationResult'
+components:
+  securitySchemes:
+    apiKeyQuery:
+      type: apiKey
+      in: query
+      name: apiKey
+      description: |-
+        API key issued at signup. Pass as the `apiKey` query string parameter on every
+        request. Treat the key as a credential and rotate from the customer dashboard
+        if exposed.
+  parameters:
+    ApiKey:
+      name: apiKey
+      in: query
+      required: true
+      description: Customer API key.
+      schema:
+        type: string
+    Email:
+      name: email
+      in: query
+      required: true
+      description: Email address to verify.
+      schema:
+        type: string
+        format: email
+        example: john.doe@example.com
+    Xml:
+      name: xml
+      in: query
+      required: false
+      description: Set to `true` to receive an XML response payload instead of JSON.
+      schema:
+        type: boolean
+        default: false
+  schemas:
+    VerificationResult:
+      type: object
+      description: Outcome of a single email-address verification.
+      properties:
+        status:
+          type: string
+          description: |-
+            Top-level deliverability verdict.
+              * `passed` - mailbox accepts mail and is safe to send to.
+              * `failed` - mailbox / domain / mx is invalid; do not send.
+              * `unknown` - server is catch-all or greylisting; result is indeterminate.
+              * `transient` - temporary failure; retry later.
+          enum:
+            - passed
+            - failed
+            - unknown
+            - transient
+        event:
+          type: string
+          description: |-
+            Fine-grained event code describing the verification outcome.
+              * `mailboxExists` - mailbox confirmed (paid).
+              * `mailboxDoesNotExist` - mailbox does not exist (paid).
+              * `mailboxIsFull` - mailbox is over quota (paid).
+              * `domainDoesNotExist` - domain has no DNS record (free).
+              * `mxServerDoesNotExist` - domain has no MX server (free).
+              * `invalidSyntax` - address is malformed (free).
+              * `isCatchall` - server accepts all addresses (free).
+              * `isGreylisting` - server is greylisting; retry later (free).
+              * `transientError` - temporary error during verification (free).
+          enum:
+            - mailboxExists
+            - mailboxDoesNotExist
+            - mailboxIsFull
+            - domainDoesNotExist
+            - mxServerDoesNotExist
+            - invalidSyntax
+            - isCatchall
+            - isGreylisting
+            - transientError
+        details:
+          type: string
+          description: Human-readable explanation of the event.
+          example: The mailbox exists.
+        email:
+          type: string
+          format: email
+          description: Email address that was verified.
+          example: john.doe@example.com
+        emailSuggested:
+          type: string
+          description: Corrected address when a domain typo is detected.
+          nullable: true
+          example: john.doe@gmail.com
+        mailbox:
+          type: string
+          description: Local part of the address.
+          example: john.doe
+        domain:
+          type: string
+          description: Domain part of the address.
+          example: example.com
+        mxIp:
+          type: string
+          description: IPv4 address of the resolved mail exchange server.
+          example: 142.250.190.27
+        mxLocation:
+          type: string
+          description: ISO 3166-1 alpha-2 country code where the MX server is hosted.
+          example: US
+        possibleSpamtrap:
+          type: boolean
+          description: Address matches known spam-trap or honeypot patterns.
+        isComplainer:
+          type: boolean
+          description: Address belongs to a user who frequently marks mail as spam.
+        isDisposable:
+          type: boolean
+          description: Address belongs to a known disposable / burner provider.
+        isFreeService:
+          type: boolean
+          description: Address is hosted on a free consumer mailbox provider (Gmail, Yahoo, etc.).
+        isOffensive:
+          type: boolean
+          description: Address local-part contains profanity or offensive language.
+        isRoleAccount:
+          type: boolean
+          description: Address is a role / departmental alias such as `info@`, `sales@`, or `support@`.
+        isGibberish:
+          type: boolean
+          description: Address local-part appears to be machine-generated (keyboard smash).
+        remaining:
+          type: string
+          description: Customer credit balance remaining after this request.
+          example: '9942'
+        execution:
+          type: number
+          format: float
+          description: Wall-clock execution time of the verification, in seconds.
+          example: 0.368
+      required:
+        - status
+        - event
+        - details
+        - email
+        - mailbox
+        - domain
+        - remaining
+        - execution
+    Error:
+      type: object
+      description: Error envelope returned for non-2xx responses.
+      properties:
+        status:
+          type: string
+          example: failed
+        event:
+          type: string
+          example: invalidApiKey
+        details:
+          type: string
+          example: The supplied API key is invalid or has no remaining credits.
+  examples:
+    MailboxExists:
+      summary: Mailbox confirmed (paid event)
+      value:
+        status: passed
+        event: mailboxExists
+        details: The mailbox exists.
+        email: john.doe@gmail.com
+        emailSuggested: null
+        mailbox: john.doe
+        domain: gmail.com
+        mxIp: 142.250.190.27
+        mxLocation: US
+        possibleSpamtrap: false
+        isComplainer: false
+        isDisposable: false
+        isFreeService: true
+        isOffensive: false
+        isRoleAccount: false
+        isGibberish: false
+        remaining: '9942'
+        execution: 0.368
+    MailboxDoesNotExist:
+      summary: Mailbox does not exist (paid event)
+      value:
+        status: failed
+        event: mailboxDoesNotExist
+        details: The mailbox does not exist.
+        email: not.a.real.user@gmail.com
+        emailSuggested: null
+        mailbox: not.a.real.user
+        domain: gmail.com
+        mxIp: 142.250.190.27
+        mxLocation: US
+        possibleSpamtrap: false
+        isComplainer: false
+        isDisposable: false
+        isFreeService: true
+        isOffensive: false
+        isRoleAccount: false
+        isGibberish: false
+        remaining: '9941'
+        execution: 0.412
+    IsDisposable:
+      summary: Disposable address detected (free event)
+      value:
+        status: failed
+        event: mailboxDoesNotExist
+        details: The mailbox does not exist.
+        email: throwaway@mailinator.com
+        emailSuggested: null
+        mailbox: throwaway
+        domain: mailinator.com
+        mxIp: 198.51.100.10
+        mxLocation: US
+        possibleSpamtrap: false
+        isComplainer: false
+        isDisposable: true
+        isFreeService: false
+        isOffensive: false
+        isRoleAccount: false
+        isGibberish: false
+        remaining: '9940'
+        execution: 0.221

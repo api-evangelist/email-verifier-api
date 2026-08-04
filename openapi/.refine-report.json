@@ -1,0 +1,14 @@
+{
+  "provider": "email-verifier-api",
+  "sources": [
+    "email-verifier-api-verification-api-openapi.yml"
+  ],
+  "outputs": [
+    "email-verifier-api-verification-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
