@@ -28,7 +28,7 @@ description: |-
   lead-generation operators that need to eliminate hard bounces and protect sender
   reputation before they send.
 created: '2026-05-06'
-modified: '2026-05-19'
+modified: '2026-08-13'
 specificationVersion: '0.20'
 tags:
   - Email Verification
@@ -220,6 +220,63 @@ common:
       - name: OpenResty / NGINX
   - type: LlmsText
     url: https://emailverifierapi.com/llms.txt
+  - type: APIReference
+    url: https://emailverifierapi.com/api-docs/
+  - type: LLMsTxt
+    url: llms/email-verifier-api-llms.txt
+  - type: Packages
+    url: packages/email-verifier-api-packages.yml
+  - type: Conventions
+    url: conventions/email-verifier-api-conventions.yml
+  - type: ErrorCatalog
+    url: errors/email-verifier-api-problem-types.yml
+  - type: DataModel
+    url: data-model/email-verifier-api-data-model.yml
+  - type: Lifecycle
+    url: lifecycle/email-verifier-api-lifecycle.yml
+  - type: Conformance
+    url: conformance/email-verifier-api-conformance.yml
+  - type: Overlay
+    url: overlays/email-verifier-api-verification-api-overlay.yaml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: WellKnownProbe
+    url: well-known/email-verifier-api-well-known.yml
+    description: >-
+      Probe record only. Every /.well-known/ path returned 403 from the provider's firewall;
+      no document is served, so no WellKnown / SecurityTxt pointer is emitted.
+  - type: MCPCandidate
+    url: mcp/email-verifier-api-mcp.yml
+    description: >-
+      Derived candidate tool surface. The provider publishes no MCP server, so no MCPServer
+      pointer is emitted.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-13'
+  status: minimal
+  artifacts_added: 14
+  pass: local-v1
+x-coverage:
+  state: blocked
+  reason: bot-challenge
+  detail: >-
+    The origin at 159.65.41.138 answers non-browser clients with its own "403 Forbidden /
+    Access Denied / Firewall Protection" interstitial and then drops the connection entirely,
+    and it refused our second egress at the TCP layer (ECONNREFUSED) on that egress's very
+    first request — so neither the published llms.txt, the api-docs reference, nor any
+    /.well-known/ path could be read this pass, and every new artifact had to be derived from
+    the OpenAPI already harvested in an earlier round.
+  evidence:
+    - url: https://emailverifierapi.com/openapi.json
+      status: 404
+    - url: https://emailverifierapi.com/llms.txt
+      status: 403
+    - url: https://emailverifierapi.com/.well-known/security.txt
+      status: 403
+    - url: https://emailverifierapi.com/.well-known/agent-card.json
+      status: 403
+    - url: https://emailverifierapi.com/api-docs/
+      status: 0
+  checked: '2026-08-13'
