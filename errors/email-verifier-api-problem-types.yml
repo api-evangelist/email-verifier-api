@@ -1,0 +1,125 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/email-verifier-api-verification-api-openapi.yml
+provider: Email Verifier API
+providerId: email-verifier-api
+format: vendor-envelope
+format_note: |-
+  NOT RFC 9457. The API does not serve `application/problem+json` and declares no `type` URI
+  for any error. Errors reuse the SAME three-field envelope as a successful verification —
+  `{status, event, details}` — served as `application/json`. An agent therefore cannot
+  distinguish an error from a result by content type or by media type negotiation; it must
+  branch on the HTTP status code and then on the `event` string.
+envelope:
+  schema: components/schemas/Error
+  fields:
+    - name: status
+      type: string
+      description: Top-level verdict; `failed` on an error response.
+      example: failed
+    - name: event
+      type: string
+      description: Machine-readable error code. Not enumerated in the spec for error responses.
+      example: invalidApiKey
+    - name: details
+      type: string
+      description: Human-readable explanation.
+      example: The supplied API key is invalid or has no remaining credits.
+  content_type: application/json
+  alternate_content_type: application/xml
+  alternate_note: Pass `xml=true` to receive the same envelope as XML.
+problems:
+  - status: 401
+    title: Missing or invalid API key
+    event: invalidApiKey
+    description: >-
+      The `apiKey` query parameter was absent, malformed, or does not match an active account.
+    remediation: >-
+      Confirm the key from the customer dashboard and pass it as the `apiKey` query parameter
+      on every request. Rotate the key if it may have leaked — it travels in the URL and is
+      recorded by any intermediary that logs request lines.
+    retryable: false
+    source_operation: openapi/email-verifier-api-verification-api-openapi.yml#verifyEmailGet
+  - status: 402
+    title: Insufficient credits
+    description: >-
+      The account's credit balance is exhausted. Verification is metered per Paid event and
+      credits are bought in packs.
+    remediation: >-
+      Top up a credit pack. Pre-empt this by reading the `remaining` field returned on every
+      successful response and refusing to dispatch further work below a floor.
+    retryable: false
+    retry_after_topup: true
+    source_operation: openapi/email-verifier-api-verification-api-openapi.yml#verifyEmailGet
+  - status: 429
+    title: Rate limit exceeded
+    description: >-
+      Request rate exceeded a platform-side ceiling. The ceiling itself is not published; see
+      rate-limits/email-verifier-api-rate-limits.yml.
+    remediation: >-
+      Back off exponentially with jitter and retry. No `Retry-After` or `RateLimit-*` response
+      header is documented, so the client must choose its own schedule.
+    retryable: true
+    source_operation: openapi/email-verifier-api-verification-api-openapi.yml#verifyEmailGet
+  - status: 503
+    title: Service unavailable
+    description: >-
+      Documented in rate-limits/email-verifier-api-rate-limits.yml as the service-unavailable
+      code. Not declared in the OpenAPI.
+    remediation: Back off and retry.
+    retryable: true
+    source_operation: rate-limits/email-verifier-api-rate-limits.yml
+outcome_events:
+  note: |-
+    Distinct from the errors above. These are the `event` values a 200 OK carries. Several of
+    them are FAILURES of the verification, not failures of the request — an agent that only
+    checks the HTTP status will treat an undeliverable address as a success. This enum is the
+    real error semantics of the product and is the reason a caller must always branch on
+    `status` + `event`.
+  source: components/schemas/VerificationResult#event
+  events:
+    - event: mailboxExists
+      status: passed
+      billing: paid
+      meaning: Mailbox confirmed to exist and accept mail.
+    - event: mailboxDoesNotExist
+      status: failed
+      billing: paid
+      meaning: Mailbox does not exist; do not send.
+    - event: mailboxIsFull
+      status: failed
+      billing: paid
+      meaning: Mailbox is over quota.
+    - event: domainDoesNotExist
+      status: failed
+      billing: free
+      meaning: Domain has no DNS record.
+    - event: mxServerDoesNotExist
+      status: failed
+      billing: free
+      meaning: Domain resolves but publishes no MX server.
+    - event: invalidSyntax
+      status: failed
+      billing: free
+      meaning: Address is malformed.
+    - event: isCatchall
+      status: unknown
+      billing: free
+      meaning: Destination accepts all addresses; existence is indeterminate.
+    - event: isGreylisting
+      status: unknown
+      billing: free
+      meaning: Destination is greylisting; retry later.
+    - event: transientError
+      status: transient
+      billing: free
+      meaning: Temporary error during verification; retry after a delay.
+gaps:
+  - No RFC 9457 `application/problem+json` representation.
+  - No `type` URI, no error documentation anchor per code.
+  - Error `event` values are not enumerated in the OpenAPI the way outcome events are.
+  - No 400 declared for a missing/malformed `email` parameter.
+  - No `Retry-After` on 429.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

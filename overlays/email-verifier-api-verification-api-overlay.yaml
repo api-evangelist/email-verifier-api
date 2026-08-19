@@ -1,0 +1,83 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Email Verifier API Verification API
+  version: 1.0.0
+x-generated: '2026-08-13'
+x-method: generated
+x-source: openapi/email-verifier-api-verification-api-openapi.yml
+extends: openapi/email-verifier-api-verification-api-openapi.yml
+x-note: |-
+  Captures the API Evangelist enrichment as an OpenAPI Overlay 1.0.0 document rather than
+  mutating the harvested specification. Applying this overlay attaches the provenance,
+  metering, agent-hazard and convention findings from this repo to the spec itself, so a
+  consumer who resolves only the OpenAPI still sees them.
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-profile: https://apis.io/provider/email-verifier-api/
+      x-apievangelist-enriched: '2026-08-13'
+      x-artifact-conventions: conventions/email-verifier-api-conventions.yml
+      x-artifact-errors: errors/email-verifier-api-problem-types.yml
+      x-artifact-data-model: data-model/email-verifier-api-data-model.yml
+      x-artifact-plans: plans/email-verifier-api-plans-pricing.yml
+      x-artifact-rate-limits: rate-limits/email-verifier-api-rate-limits.yml
+      x-artifact-lifecycle: lifecycle/email-verifier-api-lifecycle.yml
+      x-artifact-conformance: conformance/email-verifier-api-conformance.yml
+  - target: $.info
+    update:
+      x-lifecycle:
+        versioning: uri-path
+        current: v2
+        status_page: null
+        changelog: null
+        deprecation_policy: null
+      x-agent-hazards:
+        - >-
+          A 200 OK does not mean the address is deliverable. Branch on `status`
+          (passed|failed|unknown|transient) and then on `event`, never on the HTTP status alone.
+        - >-
+          The API key is a QUERY parameter and is written to any intermediary access log.
+          Prefer the POST form and rotate keys that may have been logged.
+        - >-
+          Format is selected with `?xml=true`, not with an `Accept` header. Content negotiation
+          is ignored.
+        - >-
+          There is no idempotency key and no de-duplication. A blind retry of a Paid event is
+          billed a second time; cache results client-side keyed on the normalized address.
+  - target: $.paths['/'].get
+    update:
+      x-metering:
+        model: credit
+        paid_events: [mailboxExists, mailboxDoesNotExist, mailboxIsFull]
+        free_events: [invalidSyntax, domainDoesNotExist, mxServerDoesNotExist, isCatchall, isGreylisting, transientError]
+        balance_field: remaining
+      x-idempotent: true
+      x-idempotency-key: null
+      x-safe: true
+  - target: $.paths['/'].post
+    update:
+      x-metering:
+        model: credit
+        paid_events: [mailboxExists, mailboxDoesNotExist, mailboxIsFull]
+        free_events: [invalidSyntax, domainDoesNotExist, mxServerDoesNotExist, isCatchall, isGreylisting, transientError]
+        balance_field: remaining
+      x-idempotent: true
+      x-idempotency-key: null
+      x-recommended-for: server-to-server and agent traffic — keeps the address out of URLs and access logs
+  - target: $.components.securitySchemes.apiKeyQuery
+    update:
+      x-transport-risk: >-
+        Credential travels in the query string and is recorded by proxy, CDN and web-server
+        access logs, browser history, and Referer headers. No header-based alternative is
+        documented.
+  - target: $.components.schemas.VerificationResult.properties.remaining
+    update:
+      x-note: >-
+        Typed as a string although it carries an integer credit count. Parse defensively.
+  - target: $.components.schemas.Error
+    update:
+      x-error-format: vendor-envelope
+      x-not-rfc9457: true
+      x-note: >-
+        Shares the `status`, `event` and `details` field names with VerificationResult, so
+        success and failure cannot be distinguished by document shape.

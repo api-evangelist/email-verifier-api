@@ -1,0 +1,58 @@
+generated: '2026-08-13'
+method: derived
+source: |-
+  openapi/email-verifier-api-verification-api-openapi.yml (versioning, deprecated operations),
+  plus web search for a status page, changelog, deprecation or SLA policy — none found.
+provider: Email Verifier API
+providerId: email-verifier-api
+versioning:
+  scheme: uri-path
+  current: v2
+  base: https://emailverifierapi.com/v2
+  info_version: '2.0'
+  docs: https://emailverifierapi.com/api-docs/
+  docs_title: Developer Documentation v2
+  detail: >-
+    The major version is carried in the path segment `/v2/`. A `v1` is implied by the numbering
+    but no v1 documentation, migration guide or sunset notice was found.
+deprecation:
+  policy_url: null
+  sunset_header: unknown
+  detail: >-
+    No deprecation policy, no RFC 8594 `Sunset`/`Deprecation` header documentation, and no
+    versioning-support commitment was found. A consumer has no published statement of how much
+    notice a breaking change would carry.
+deprecated_operations: []
+sla:
+  url: null
+  uptime_target: null
+  detail: >-
+    No SLA or uptime commitment published. The docs advertise sub-500ms typical response time
+    as a service characteristic; that is a performance claim, not a contractual target.
+status_page: null
+status_page_detail: >-
+  No status page found. status.emailverifierapi.com does not resolve (DNS returns no record;
+  neither do api./docs./developer./trust./security./mcp. — the apex is the only host this
+  company operates), and web search surfaced no hosted status page (Statuspage/Instatus/
+  BetterStack). There is therefore no incident history, no uptime record, and no
+  subscribe-to-incidents channel for this API.
+changelog: null
+changelog_detail: >-
+  No dated changelog or release-notes page found. `info.version` is the only version signal,
+  and it is not tied to any published entry. No changelog/ artifact is written.
+support:
+  email: support@emailverifierapi.com
+  detail: Email support is the only documented channel.
+gaps:
+  - No status page
+  - No changelog / release notes
+  - No deprecation or sunset policy
+  - No SLA
+  - No published v1 → v2 migration record
+no_pointer_note: >-
+  NO `type: StatusPage` and NO `type: Deprecation` pointer is emitted in apis.yml. Both of
+  those checks assert the provider publishes the surface; this one does not, and a Lifecycle
+  file recording their absence must not be wired as if it recorded their presence.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

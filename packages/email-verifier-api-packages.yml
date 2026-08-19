@@ -1,0 +1,52 @@
+generated: '2026-08-13'
+method: searched
+source: |-
+  npm registry search API (registry.npmjs.org/-/v1/search), PyPI JSON API
+  (pypi.org/pypi/emailverifierapi/json), RubyGems API (rubygems.org/api/v1/gems), plus web
+  search of the provider's own integration pages.
+provider: Email Verifier API
+providerId: email-verifier-api
+package_count: 0
+official_package_count: 0
+result: no-first-party-client-libraries-published
+packages: []
+note: |-
+  Email Verifier API publishes NO first-party client library in any public package registry.
+  Searched and confirmed absent:
+
+    * npm      — registry search for "emailverifierapi" returned zero results; a search for
+                 "email-verifier-api" returned only third-party/unrelated packages
+                 (node-email-verifier by jesselpalmer, @visulima/email-verifier,
+                 whois-api-llc/email-verifier, AfterShip email-verifier) and one
+                 platform-authored connector, @pipedream/email_verifier_api 0.1.0
+                 (published 2025-02-06) — Pipedream's own component wrapper, NOT the vendor's.
+    * PyPI     — https://pypi.org/pypi/emailverifierapi/json returned {"message":"Not Found"}.
+    * RubyGems — https://rubygems.org/api/v1/gems/emailverifierapi.json returned a non-JSON
+                 404 body.
+    * Maven Central / NuGet / crates.io / pkg.go.dev / Packagist — no vendor-namespaced
+                 artifact surfaced through registry or web search.
+
+  What the vendor DOES ship instead is roughly thirty language-specific INTEGRATION GUIDE
+  pages under https://emailverifierapi.com/integrations/verify-email-with-<language>/
+  (Node.js, Python, Go, PHP, Ruby, Java, C#, Rust, Swift, Kotlin, Elixir, Dart, Scala,
+  Clojure, PowerShell, cURL and more). Those are copy-paste HTTP snippets against the single
+  /v2/ endpoint, not installable, versioned, semver-tracked packages. For a consumer this is
+  a material difference: there is nothing to `npm install`, nothing to pin, and no release
+  feed that would signal maintenance or abandonment. The apis.yml `SDKs` data block enumerates
+  those languages; this artifact records that none of them corresponds to a published package.
+
+  Because a single-endpoint GET/POST API needs no client library to be usable, the absence is
+  a reasonable product decision rather than decay — but it is still an absence, recorded here
+  as data rather than left unstated.
+third_party_wrappers:
+  - language: javascript
+    registry: npm
+    name: "@pipedream/email_verifier_api"
+    url: https://www.npmjs.com/package/@pipedream/email_verifier_api
+    version: 0.1.0
+    published: '2025-02-06'
+    official: false
+    note: Pipedream-authored connector components for the Email Verifier API; not vendor-maintained.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

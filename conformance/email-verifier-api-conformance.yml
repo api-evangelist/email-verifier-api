@@ -1,0 +1,94 @@
+generated: '2026-08-13'
+method: derived
+source: |-
+  openapi/email-verifier-api-verification-api-openapi.yml plus web search of the provider's
+  own homepage copy. The provider's site could not be fetched directly during this pass — the
+  origin returned a firewall 403 and then refused connections (see
+  well-known/email-verifier-api-well-known.yml) — so the marketing compliance claim below is
+  recorded from the search index at low confidence rather than from a page we read.
+provider: Email Verifier API
+providerId: email-verifier-api
+standards:
+  - id: openapi-3.1
+    conforms: true
+    evidence: >-
+      openapi/email-verifier-api-verification-api-openapi.yml declares `openapi: 3.1.0`
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: >-
+      Errors are served as application/json using a vendor `{status, event, details}` envelope.
+      No application/problem+json, no `type` URI.
+  - id: oauth2
+    conforms: false
+    evidence: No oauth2 securityScheme; the only scheme is an apiKey in the query string.
+  - id: oidc
+    conforms: false
+    evidence: No openIdConnect scheme; /.well-known/openid-configuration is not served.
+  - id: http-content-negotiation
+    conforms: false
+    evidence: >-
+      Response format is selected with the `xml=true` query parameter rather than the `Accept`
+      header, so a standards-conformant client cannot negotiate XML.
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: /.well-known/security.txt is not served (probed 2026-08-13).
+  - id: rfc8615-well-known
+    conforms: false
+    evidence: No /.well-known/ document of any kind is served.
+  - id: rfc8594-sunset-header
+    conforms: false
+    evidence: No deprecation policy or Sunset/Deprecation header documented.
+  - id: idempotency-key
+    conforms: false
+    evidence: >-
+      No idempotency-key contract. Operations are naturally idempotent (read-only) but repeat
+      calls are separately billed. See conventions/email-verifier-api-conventions.yml.
+  - id: pagination
+    conforms: false
+    not_applicable: true
+    evidence: Single-address lookup; no collection surface exists to paginate.
+  - id: rate-limit-headers
+    conforms: false
+    evidence: >-
+      No RateLimit-*, X-RateLimit-* or Retry-After header documented. The only quota signal is
+      the `remaining` credit balance in the response body.
+  - id: a2a
+    conforms: false
+    evidence: No agent card at /.well-known/agent-card.json or /.well-known/agent.json.
+  - id: mcp
+    conforms: false
+    evidence: No MCP server published. See mcp/email-verifier-api-mcp.yml.
+  - id: asyncapi
+    conforms: false
+    not_applicable: true
+    evidence: >-
+      No event, streaming or webhook surface exists — verification is strictly synchronous
+      request/response — so there is nothing for AsyncAPI to describe.
+compliance_claims:
+  confidence: low
+  method: searched
+  source: web search index of https://emailverifierapi.com/ (page not directly fetchable this pass)
+  claims:
+    - claim: Independently audited for security, availability and confidentiality across all systems
+      named_certification: null
+      note: >-
+        The wording tracks the SOC 2 Trust Services Criteria (security, availability,
+        confidentiality) but the site copy surfaced in the index does NOT name SOC 2, a Type,
+        an auditor, a report date, or a trust centre where a report could be requested.
+    - claim: Full compliance with EU and CA privacy laws, automated data deletion, DPA ready
+      named_certification: null
+      note: Reads as GDPR + CCPA/CPRA posture. No DPA link, sub-processor list, or DPO contact found.
+  no_pointer_note: >-
+    NO `type: Compliance` and NO `type: TrustCenter` pointer is emitted. The claims above are
+    unnamed marketing assertions read from a search index, not a published compliance program
+    with a certification, a report, or a trust page we could reach. Wiring either pointer would
+    credit the provider for a compliance surface no evidence establishes.
+gaps:
+  - No named certification (SOC 2 / ISO 27001) with an auditor or report date
+  - No trust centre or compliance page (trust. and security. subdomains do not resolve)
+  - No security.txt, no vulnerability-disclosure policy
+  - No SPF and no DMARC record on emailverifierapi.com — see security/email-verifier-api-domain-security.yml
+  - No RFC 9457 error semantics
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

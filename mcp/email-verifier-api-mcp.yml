@@ -1,0 +1,67 @@
+generated: '2026-08-13'
+method: derived
+status: candidate
+source: openapi/email-verifier-api-verification-api-openapi.yml
+provider: Email Verifier API
+providerId: email-verifier-api
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: api-key
+  verified: derived
+server:
+  name: email-verifier-api
+  transport: null
+  url: null
+note: |-
+  NO MCP server is published by Email Verifier API. Searched the npm registry (no
+  vendor-namespaced @*/mcp package), the provider's own integration and documentation pages,
+  and general web search; nothing surfaced. `deployment.mode: none` is therefore the finding —
+  there is neither a remote endpoint an agent could POST to today nor a stdio package a human
+  could install.
+
+  The tools below are a CANDIDATE surface DERIVED from the two operations in the provider's
+  OpenAPI. They are what an MCP server for this API would expose if one existed. They are not
+  a claim that the provider ships anything, and no `type: MCPServer` pointer is wired into
+  apis.yml from this file — emitting one would credit the provider with an agent surface it
+  does not serve.
+
+  Auth shape for any future server: the API key travels as the `apiKey` QUERY parameter on
+  every request (see authentication/email-verifier-api-authentication.yml). A query-string
+  credential is a poor fit for agent deployments — it lands in proxy access logs and browser
+  history — which is worth flagging to the provider ahead of any MCP work.
+tools:
+  - name: verify_email
+    description: >-
+      Run the 16-point verification engine against a single email address and return the
+      deliverability verdict (status), the granular event code, a human-readable explanation,
+      and the intelligence flags (disposable, role account, free service, spam-trap,
+      gibberish, offensive, complainer).
+    source_operation: openapi/email-verifier-api-verification-api-openapi.yml#verifyEmailGet
+    input_schema_source: >-
+      components/parameters/Email + components/parameters/Xml (apiKey is server-side credential,
+      not an agent input)
+    read_only: true
+    metered: true
+    metering_note: >-
+      Paid events (mailboxExists, mailboxDoesNotExist, mailboxIsFull) consume one credit each.
+      Free events (invalidSyntax, domainDoesNotExist, mxServerDoesNotExist, isCatchall,
+      isGreylisting, transientError) do not.
+  - name: verify_email_post
+    description: >-
+      Same verification as verify_email but submits the address in a form-encoded request body
+      so it does not appear in URL strings or proxy access logs. Preferred for server-to-server
+      and agent traffic.
+    source_operation: openapi/email-verifier-api-verification-api-openapi.yml#verifyEmailPost
+    input_schema_source: requestBody application/x-www-form-urlencoded {email} + parameters/Xml
+    read_only: true
+    metered: true
+coverage:
+  openapi_operations: 2
+  tools_derived: 2
+  tools_published_by_provider: 0
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

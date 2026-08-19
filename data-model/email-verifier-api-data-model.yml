@@ -1,0 +1,84 @@
+generated: '2026-08-13'
+method: derived
+source: openapi/email-verifier-api-verification-api-openapi.yml
+provider: Email Verifier API
+providerId: email-verifier-api
+shape: flat
+shape_note: |-
+  There is no entity-relationship graph to draw. The v2 API exposes no persisted resources —
+  no customers, no lists, no jobs, no stored verifications — so there are no ids, no id
+  prefixes, no `$ref` chains between domain objects and no has_one/has_many edges. The data
+  model is a single computed value object returned by a single operation, plus a three-field
+  error envelope that shares two of its field names.
+
+  This is worth stating explicitly rather than omitting: a caller who expects to fetch a prior
+  verification by id, page a history, or reconcile a batch will find no surface for it. Every
+  result is ephemeral and must be persisted client-side.
+entities:
+  - name: VerificationResult
+    schema: components/schemas/VerificationResult
+    kind: value-object
+    persisted: false
+    identifier: null
+    returned_by:
+      - verifyEmailGet
+      - verifyEmailPost
+    field_groups:
+      - group: verdict
+        fields:
+          - {field: status, type: string, enum: [passed, failed, unknown, transient], required: true}
+          - {field: event, type: string, enum: [mailboxExists, mailboxDoesNotExist, mailboxIsFull, domainDoesNotExist, mxServerDoesNotExist, invalidSyntax, isCatchall, isGreylisting, transientError], required: true}
+          - {field: details, type: string, required: true, note: human-readable explanation of the event}
+      - group: address
+        fields:
+          - {field: email, type: string, format: email, required: true, note: the address as submitted}
+          - {field: emailSuggested, type: string, nullable: true, note: typo-corrected address when a domain misspelling is detected}
+          - {field: mailbox, type: string, required: true, note: local part}
+          - {field: domain, type: string, required: true, note: domain part}
+      - group: infrastructure
+        fields:
+          - {field: mxIp, type: string, note: IPv4 of the resolved mail exchange}
+          - {field: mxLocation, type: string, note: ISO 3166-1 alpha-2 country of the MX host}
+      - group: intelligence-flags
+        fields:
+          - {field: possibleSpamtrap, type: boolean}
+          - {field: isComplainer, type: boolean}
+          - {field: isDisposable, type: boolean}
+          - {field: isFreeService, type: boolean}
+          - {field: isOffensive, type: boolean}
+          - {field: isRoleAccount, type: boolean}
+          - {field: isGibberish, type: boolean}
+      - group: account-metering
+        fields:
+          - {field: remaining, type: string, required: true, note: "credit balance after this call — note it is a STRING, not an integer"}
+          - {field: execution, type: number, format: float, required: true, note: wall-clock seconds for the verification}
+  - name: Error
+    schema: components/schemas/Error
+    kind: envelope
+    persisted: false
+    identifier: null
+    returned_by_status: [401, 402, 429]
+    fields:
+      - {field: status, type: string, example: failed}
+      - {field: event, type: string, example: invalidApiKey}
+      - {field: details, type: string}
+relationships: []
+relationships_note: >-
+  None. `VerificationResult` and `Error` share the field names `status`, `event` and `details`
+  but are not related by `$ref`, allOf, or discriminator — they are two independent schemas
+  with an overlapping surface. That overlap is the only structural coupling in the model, and
+  it is the reason a client cannot tell success from failure by shape alone.
+derived_facets:
+  note: >-
+    The seven boolean flags are independent classifications computed over the same address, not
+    sub-entities. `isDisposable` and `isFreeService` are mutually informative but not mutually
+    exclusive in the schema; `possibleSpamtrap` and `isComplainer` are reputation signals rather
+    than deliverability signals and may be true on an address whose `status` is `passed`.
+observations:
+  - '`remaining` is typed as a string while `execution` is a float — inconsistent numeric typing on the same object.'
+  - No `id`, `createdAt`, or request-correlation field exists on the result.
+  - '`emailSuggested` is the only nullable field; every other optional field is simply absent-or-present.'
+render: null
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

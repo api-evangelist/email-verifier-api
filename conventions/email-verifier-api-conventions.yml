@@ -1,0 +1,133 @@
+generated: '2026-08-13'
+method: derived
+source: |-
+  openapi/email-verifier-api-verification-api-openapi.yml, plus the artifacts already in this
+  repo (authentication/, rate-limits/, plans/, errors/).
+provider: Email Verifier API
+providerId: email-verifier-api
+summary: >-
+  A single-endpoint, single-resource API. There is no collection, no pagination, no expansion,
+  no metadata surface and no write model — every call is one address in, one verdict out. The
+  cross-cutting semantics that matter are authentication placement, response format
+  negotiation, the credit-metering signal, and the fact that failure is carried inside a 200.
+authentication:
+  style: api-key
+  placement: query
+  parameter: apiKey
+  transport_risk: |-
+    The credential is in the URL. It is written to proxy, CDN and web-server access logs, to
+    browser history when the GET form is used from a page, and to any Referer header the
+    destination sees. No header-based alternative is documented. Agents and server-to-server
+    callers should prefer the POST form, which at least keeps the ADDRESS out of the URL, but
+    the key remains a query parameter on both verbs.
+  detail: authentication/email-verifier-api-authentication.yml
+idempotency:
+  supported: false
+  idempotency_key_header: null
+  natural_idempotence: true
+  detail: |-
+    The provider documents NO idempotency-key contract — no `Idempotency-Key` header, no
+    request-id de-duplication, no replay window. The operations are nonetheless naturally
+    idempotent in the HTTP sense: both `verifyEmailGet` and `verifyEmailPost` are read-only
+    lookups that create no server-side resource, so a retry is safe for CORRECTNESS.
+
+    A retry is NOT free, however. Paid events (mailboxExists, mailboxDoesNotExist,
+    mailboxIsFull) consume one credit each, and nothing de-duplicates a repeated verification
+    of the same address. A client that retries on timeout without its own cache will be billed
+    twice for the same answer. Callers should keep a local result cache keyed on the normalized
+    address, and treat that cache as the idempotency layer the API does not provide.
+  no_pointer_note: >-
+    NO `type: Idempotency` pointer is emitted in apis.yml. The agent-readiness idempotency
+    dimension rewards a provider-published idempotency contract; this provider has none, and
+    claiming one from natural read-safety would be false credit.
+pagination:
+  supported: false
+  detail: Single-address lookup. No list, batch, or collection operation exists in the v2 API.
+filtering:
+  supported: false
+sorting:
+  supported: false
+field_expansion:
+  supported: false
+  detail: >-
+    The response is a fixed, flat, 18-field object. There is no sparse-fieldset or expansion
+    parameter; every verification returns the full result document.
+metadata:
+  supported: false
+  detail: No customer-supplied metadata or reference field is echoed back on the response.
+request_tracing:
+  request_id_header: null
+  detail: >-
+    No request-id or correlation header is documented on either the request or the response.
+    A caller that needs to correlate a verification with a support ticket has only the
+    address, the timestamp and the `remaining` balance to go on.
+content_negotiation:
+  default: application/json
+  alternate: application/xml
+  mechanism: query-parameter
+  parameter: xml
+  detail: >-
+    Format is selected with `?xml=true`, NOT with an `Accept` header. This is the one place the
+    API diverges most sharply from HTTP convention: standard content negotiation is ignored,
+    so a client that sends `Accept: application/xml` still receives JSON.
+verbs:
+  detail: >-
+    Both verbs hit the same path (`/`) on the same base and return the same document. POST
+    accepts the address either as a query parameter or as an
+    `application/x-www-form-urlencoded` body. There is no JSON request body.
+  operations:
+    - verb: GET
+      operation: verifyEmailGet
+      when: ad-hoc validation, spreadsheets, no-code tools, link-time integrations
+    - verb: POST
+      operation: verifyEmailPost
+      when: production server-to-server traffic; keeps the address out of URLs and access logs
+versioning:
+  scheme: uri-path
+  current: v2
+  base: https://emailverifierapi.com/v2
+  detail: lifecycle/email-verifier-api-lifecycle.yml
+error_envelope:
+  shape: '{status, event, details}'
+  same_as_success_envelope: true
+  problem_json: false
+  detail: errors/email-verifier-api-problem-types.yml
+  agent_hazard: |-
+    A 200 OK is NOT a deliverable address. `status` may be `failed`, `unknown` or `transient`
+    inside a 200. Any client that branches on HTTP status alone will silently accept
+    undeliverable, catch-all and greylisted addresses. Branch on `status` first, then `event`.
+rate_limit_signaling:
+  response_headers: []
+  detail: |-
+    No `RateLimit-*`, `X-RateLimit-*` or `Retry-After` header is documented. The only runtime
+    quota signal the API emits is the `remaining` field in the response BODY — the credit
+    balance after this call. That makes budget-awareness possible but throughput-awareness
+    impossible: a client cannot tell how close it is to a 429 until it gets one.
+  status_on_exhaustion:
+    credits: 402
+    rate: 429
+    unavailable: 503
+  detail_artifact: rate-limits/email-verifier-api-rate-limits.yml
+metering:
+  model: credit-pack
+  signal_field: remaining
+  timing_field: execution
+  free_events:
+    - invalidSyntax
+    - domainDoesNotExist
+    - mxServerDoesNotExist
+    - isCatchall
+    - isGreylisting
+    - transientError
+  paid_events:
+    - mailboxExists
+    - mailboxDoesNotExist
+    - mailboxIsFull
+  detail: >-
+    Metering is per-outcome, not per-request. Deterministic verdicts reachable without an SMTP
+    probe are returned free; only mailbox-level outcomes draw down the balance. `remaining` on
+    every response is the authoritative balance and should drive client-side budgeting.
+  detail_artifact: plans/email-verifier-api-plans-pricing.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

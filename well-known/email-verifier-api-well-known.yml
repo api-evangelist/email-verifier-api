@@ -1,0 +1,53 @@
+generated: '2026-08-13'
+method: probed
+source: live GET probes of https://emailverifierapi.com/.well-known/*
+host: https://emailverifierapi.com
+provider: Email Verifier API
+providerId: email-verifier-api
+result: no-documents-served
+note: |-
+  Every /.well-known/ path probed on the single production host returned HTTP 403 from the
+  provider's own firewall interstitial ("403 Forbidden / Access Denied / Firewall Protection"),
+  not a document. The first request of the run (/openapi.json) returned a genuine HTTP 404 site
+  page, after which the edge escalated to 403 for every subsequent path and then to connection
+  timeouts. A second, unrelated egress (datacenter IP range) was refused at the TCP layer
+  (ECONNREFUSED to 159.65.41.138:443) on its very first request, which shows the block is a
+  standing edge policy against non-browser clients rather than a reaction to this run's request
+  rate alone.
+
+  NO WellKnown / SecurityTxt / APICatalog pointer is emitted from this file. Not one path
+  returned a 200 carrying a real document, so asserting that the provider serves a well-known
+  discovery surface would be false credit. A recorded absence is the finding.
+documents:
+  - path: /.well-known/security.txt
+    status: 403
+    file: null
+    note: firewall interstitial HTML, not RFC 9116 text
+  - path: /.well-known/openid-configuration
+    status: 403
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+    file: null
+  - path: /.well-known/api-catalog
+    status: 403
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 403
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 403
+    file: null
+    note: A2A canonical path — no card. Nothing written to a2a/ per the search-only rule.
+  - path: /.well-known/agent.json
+    status: 403
+    file: null
+    note: A2A pre-0.3 legacy path — no card.
+x-evidence:
+  probed: '2026-08-13'
+  host_ip: 159.65.41.138
+  interstitial_title: 403 Forbidden — Access Denied — Firewall Protection
+  contact_offered_by_interstitial: support@emailverifierapi.com
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
