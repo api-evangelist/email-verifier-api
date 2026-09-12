@@ -112,6 +112,8 @@ apis:
     url: >-
       https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/finops/email-verifier-api-finops.yml
 common:
+  - type: Website
+    url: https://www.emailverifierapi.com/
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/email-verifier-api/overview
   - type: AgenticAccess
