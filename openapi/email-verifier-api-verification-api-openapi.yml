@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Email Verifier Verification API
   version: '2.0'
@@ -8,33 +8,7 @@ info:
 
     detection, greylisting handling, disposable address detection, role-account flagging,
 
-    spam-trap detection, gibberish detection, and B2B / B2C classification. The service is
-
-    designed to eliminate hard bounces, protect sender reputation, and improve deliverability
-
-    for marketing, transactional, and lead-generation email programs.
-
-
-    The API is delivered as a single endpoint at `https://emailverifierapi.com/v2/`. The
-
-    endpoint accepts both GET and POST requests and returns either JSON (default) or XML
-
-    (when `xml=true` is passed). Authentication is performed by sending the customer''s
-
-    `apiKey` as a query parameter.
-
-
-    Verification is metered against a credit balance. Credits are consumed only for
-
-    "Paid" events (mailbox-level results that required SMTP probing). Lightweight,
-
-    deterministic events such as syntax errors or DNS misses are returned for free and
-
-    do not consume credits. Each successful response includes a `remaining` field with
-
-    the up-to-date credit balance and an `execution` field with the wall-clock cost of
-
-    the verification.'
+    spam-trap detection, gibberish detection, and B2B / B2C classification.'
   contact:
     name: Email Verifier API Support
     email: support@emailverifierapi.com
@@ -151,6 +125,70 @@ paths:
               schema:
                 $ref: '#/components/schemas/VerificationResult'
 components:
+  examples:
+    MailboxExists:
+      summary: Mailbox confirmed (paid event)
+      value:
+        status: passed
+        event: mailboxExists
+        details: The mailbox exists.
+        email: john.doe@gmail.com
+        emailSuggested: null
+        mailbox: john.doe
+        domain: gmail.com
+        mxIp: 142.250.190.27
+        mxLocation: US
+        possibleSpamtrap: false
+        isComplainer: false
+        isDisposable: false
+        isFreeService: true
+        isOffensive: false
+        isRoleAccount: false
+        isGibberish: false
+        remaining: '9942'
+        execution: 0.368
+    IsDisposable:
+      summary: Disposable address detected (free event)
+      value:
+        status: failed
+        event: mailboxDoesNotExist
+        details: The mailbox does not exist.
+        email: throwaway@mailinator.com
+        emailSuggested: null
+        mailbox: throwaway
+        domain: mailinator.com
+        mxIp: 198.51.100.10
+        mxLocation: US
+        possibleSpamtrap: false
+        isComplainer: false
+        isDisposable: true
+        isFreeService: false
+        isOffensive: false
+        isRoleAccount: false
+        isGibberish: false
+        remaining: '9940'
+        execution: 0.221
+    MailboxDoesNotExist:
+      summary: Mailbox does not exist (paid event)
+      value:
+        status: failed
+        event: mailboxDoesNotExist
+        details: The mailbox does not exist.
+        email: not.a.real.user@gmail.com
+        emailSuggested: null
+        mailbox: not.a.real.user
+        domain: gmail.com
+        mxIp: 142.250.190.27
+        mxLocation: US
+        possibleSpamtrap: false
+        isComplainer: false
+        isDisposable: false
+        isFreeService: true
+        isOffensive: false
+        isRoleAccount: false
+        isGibberish: false
+        remaining: '9941'
+        execution: 0.412
   parameters:
     Email:
       name: email
@@ -284,70 +322,6 @@ components:
         details:
           type: string
           example: The supplied API key is invalid or has no remaining credits.
-  examples:
-    IsDisposable:
-      summary: Disposable address detected (free event)
-      value:
-        status: failed
-        event: mailboxDoesNotExist
-        details: The mailbox does not exist.
-        email: throwaway@mailinator.com
-        emailSuggested: null
-        mailbox: throwaway
-        domain: mailinator.com
-        mxIp: 198.51.100.10
-        mxLocation: US
-        possibleSpamtrap: false
-        isComplainer: false
-        isDisposable: true
-        isFreeService: false
-        isOffensive: false
-        isRoleAccount: false
-        isGibberish: false
-        remaining: '9940'
-        execution: 0.221
-    MailboxExists:
-      summary: Mailbox confirmed (paid event)
-      value:
-        status: passed
-        event: mailboxExists
-        details: The mailbox exists.
-        email: john.doe@gmail.com
-        emailSuggested: null
-        mailbox: john.doe
-        domain: gmail.com
-        mxIp: 142.250.190.27
-        mxLocation: US
-        possibleSpamtrap: false
-        isComplainer: false
-        isDisposable: false
-        isFreeService: true
-        isOffensive: false
-        isRoleAccount: false
-        isGibberish: false
-        remaining: '9942'
-        execution: 0.368
-    MailboxDoesNotExist:
-      summary: Mailbox does not exist (paid event)
-      value:
-        status: failed
-        event: mailboxDoesNotExist
-        details: The mailbox does not exist.
-        email: not.a.real.user@gmail.com
-        emailSuggested: null
-        mailbox: not.a.real.user
-        domain: gmail.com
-        mxIp: 142.250.190.27
-        mxLocation: US
-        possibleSpamtrap: false
-        isComplainer: false
-        isDisposable: false
-        isFreeService: true
-        isOffensive: false
-        isRoleAccount: false
-        isGibberish: false
-        remaining: '9941'
-        execution: 0.412
   securitySchemes:
     apiKeyQuery:
       type: apiKey
