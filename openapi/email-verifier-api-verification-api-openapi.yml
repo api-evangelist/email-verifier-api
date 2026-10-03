@@ -125,7 +125,78 @@ paths:
               schema:
                 $ref: '#/components/schemas/VerificationResult'
 components:
+  examples:
+    MailboxDoesNotExist:
+      summary: Mailbox does not exist (paid event)
+      value:
+        status: failed
+        event: mailboxDoesNotExist
+        details: The mailbox does not exist.
+        email: not.a.real.user@gmail.com
+        emailSuggested: null
+        mailbox: not.a.real.user
+        domain: gmail.com
+        mxIp: 142.250.190.27
+        mxLocation: US
+        possibleSpamtrap: false
+        isComplainer: false
+        isDisposable: false
+        isFreeService: true
+        isOffensive: false
+        isRoleAccount: false
+        isGibberish: false
+        remaining: '9941'
+        execution: 0.412
+    IsDisposable:
+      summary: Disposable address detected (free event)
+      value:
+        status: failed
+        event: mailboxDoesNotExist
+        details: The mailbox does not exist.
+        email: throwaway@mailinator.com
+        emailSuggested: null
+        mailbox: throwaway
+        domain: mailinator.com
+        mxIp: 198.51.100.10
+        mxLocation: US
+        possibleSpamtrap: false
+        isComplainer: false
+        isDisposable: true
+        isFreeService: false
+        isOffensive: false
+        isRoleAccount: false
+        isGibberish: false
+        remaining: '9940'
+        execution: 0.221
+    MailboxExists:
+      summary: Mailbox confirmed (paid event)
+      value:
+        status: passed
+        event: mailboxExists
+        details: The mailbox exists.
+        email: john.doe@gmail.com
+        emailSuggested: null
+        mailbox: john.doe
+        domain: gmail.com
+        mxIp: 142.250.190.27
+        mxLocation: US
+        possibleSpamtrap: false
+        isComplainer: false
+        isDisposable: false
+        isFreeService: true
+        isOffensive: false
+        isRoleAccount: false
+        isGibberish: false
+        remaining: '9942'
+        execution: 0.368
   parameters:
+    ApiKey:
+      name: apiKey
+      in: query
+      required: true
+      description: Customer API key.
+      schema:
+        type: string
     Email:
       name: email
       in: query
@@ -135,13 +206,6 @@ components:
         type: string
         format: email
         example: john.doe@example.com
-    ApiKey:
-      name: apiKey
-      in: query
-      required: true
-      description: Customer API key.
-      schema:
-        type: string
     Xml:
       name: xml
       in: query
@@ -151,6 +215,19 @@ components:
         type: boolean
         default: false
   schemas:
+    Error:
+      type: object
+      description: Error envelope returned for non-2xx responses.
+      properties:
+        status:
+          type: string
+          example: failed
+        event:
+          type: string
+          example: invalidApiKey
+        details:
+          type: string
+          example: The supplied API key is invalid or has no remaining credits.
     VerificationResult:
       type: object
       description: Outcome of a single email-address verification.
@@ -245,83 +322,6 @@ components:
       - domain
       - remaining
       - execution
-    Error:
-      type: object
-      description: Error envelope returned for non-2xx responses.
-      properties:
-        status:
-          type: string
-          example: failed
-        event:
-          type: string
-          example: invalidApiKey
-        details:
-          type: string
-          example: The supplied API key is invalid or has no remaining credits.
-  examples:
-    MailboxExists:
-      summary: Mailbox confirmed (paid event)
-      value:
-        status: passed
-        event: mailboxExists
-        details: The mailbox exists.
-        email: john.doe@gmail.com
-        emailSuggested: null
-        mailbox: john.doe
-        domain: gmail.com
-        mxIp: 142.250.190.27
-        mxLocation: US
-        possibleSpamtrap: false
-        isComplainer: false
-        isDisposable: false
-        isFreeService: true
-        isOffensive: false
-        isRoleAccount: false
-        isGibberish: false
-        remaining: '9942'
-        execution: 0.368
-    MailboxDoesNotExist:
-      summary: Mailbox does not exist (paid event)
-      value:
-        status: failed
-        event: mailboxDoesNotExist
-        details: The mailbox does not exist.
-        email: not.a.real.user@gmail.com
-        emailSuggested: null
-        mailbox: not.a.real.user
-        domain: gmail.com
-        mxIp: 142.250.190.27
-        mxLocation: US
-        possibleSpamtrap: false
-        isComplainer: false
-        isDisposable: false
-        isFreeService: true
-        isOffensive: false
-        isRoleAccount: false
-        isGibberish: false
-        remaining: '9941'
-        execution: 0.412
-    IsDisposable:
-      summary: Disposable address detected (free event)
-      value:
-        status: failed
-        event: mailboxDoesNotExist
-        details: The mailbox does not exist.
-        email: throwaway@mailinator.com
-        emailSuggested: null
-        mailbox: throwaway
-        domain: mailinator.com
-        mxIp: 198.51.100.10
-        mxLocation: US
-        possibleSpamtrap: false
-        isComplainer: false
-        isDisposable: true
-        isFreeService: false
-        isOffensive: false
-        isRoleAccount: false
-        isGibberish: false
-        remaining: '9940'
-        execution: 0.221
   securitySchemes:
     apiKeyQuery:
       type: apiKey
