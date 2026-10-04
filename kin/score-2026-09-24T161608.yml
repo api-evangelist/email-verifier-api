@@ -1,21 +1,19 @@
-# Kin Score artifact — email-verifier-api — 2026-09-01T210448
+# Kin Score artifact — email-verifier-api — 2026-09-24T161608
 # The API Evangelist rating (https://github.com/api-evangelist/kin-score). Generated; do not edit.
 ---
 kin_score:
   slug: email-verifier-api
-  schema_version: 0.18.0
-  scored_at: '2026-09-01'
-  run_ts: 2026-09-01T210448
-  composite: 57.9
+  schema_version: 0.22.0
+  scored_at: '2026-09-24'
+  run_ts: 2026-09-24T161608
+  composite: 56.5
   band: strong
   facets:
     discoverability: 75.9
     contract_quality: 67.3
-    governance: 33.3
-    operational_transparency: 31.6
-    developer_ergonomics: 49.4
-    commercial_clarity: 77.6
     contract_governance: 33.3
+    operational_transparency: 31.6
+    developer_ergonomics: 45.8
     access_clarity: 77.6
   agent_readiness:
     score: 31.5
