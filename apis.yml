@@ -112,6 +112,12 @@ apis:
     url: >-
       https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/finops/email-verifier-api-finops.yml
 common:
+  - type: Plans
+    url: plans/email-verifier-api-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/email-verifier-api-rate-limits.yml
+  - type: FinOps
+    url: finops/email-verifier-api-finops.yml
   - type: Website
     url: https://www.emailverifierapi.com/
   - type: PostmanWorkspace
