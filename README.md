@@ -1,4 +1,4 @@
-# Email Verifier API (email-verifier-api)
+# Email Verifier API
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -75,102 +75,168 @@ credit-pack balance that never expires. The product targets growth teams, ESPs, 
 lead-generation operators that need to eliminate hard bounces and protect sender
 reputation before they send.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/apis.yml)
+**Areas:** Email Verification · Deliverability · SMTP Check · Bounce Prevention · Lead Validation · Disposable Detection · Spam Trap Detection · Catch-All Detection · Greylisting · Role Account Detection · Typo Suggestion · B2B Lead Scoring
 
-## Scope
+## Email Verifier API on APIs.io
 
-- **Type:** Index
+Everything profiled for Email Verifier API is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/email-verifier-api/](https://apis.io/providers/email-verifier-api/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (1)
 
-- Email Verification
-- Deliverability
-- SMTP Check
-- Bounce Prevention
-- Lead Validation
-- Disposable Detection
-- Spam Trap Detection
-- Catch-All Detection
-- Greylisting
-- Role Account Detection
-- Typo Suggestion
-- B2B Lead Scoring
+- [Email Verifier API Verification API](https://apis.io/apis/email-verifier-api/email-verifier-api-verification-api/) — Real-time email-address verification operations.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-05-06
-- **Modified:** 2026-05-19
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### Agentic access (1)
 
-### Email Verifier API Verification
+Which operations an agent can call, which act, and which need a human in the loop.
 
-Real-time email-address verification endpoint. Single resource at
-https://emailverifierapi.com/v2/ accepting GET or POST. Returns a top-level
-deliverability status (passed / failed / unknown / transient), a granular event
-code (mailboxExists, mailboxDoesNotExist, mailboxIsFull, domainDoesNotExist,
-mxServerDoesNotExist, invalidSyntax, isCatchall, isGreylisting, transientError),
-and a set of intelligence flags (isDisposable, isRoleAccount, isFreeService,
-possibleSpamtrap, isComplainer, isOffensive, isGibberish), along with the MX
-server IP and ISO country, a typo-corrected address suggestion, the remaining
-credit balance, and the wall-clock execution time. Authentication is by API key
-passed as the `apiKey` query parameter.
+- [Email Verifier Api Agentic Access](https://apis.io/agentic-access/email-verifier-api/email-verifier-api-agentic-access/)
 
-- **Human URL:** [https://emailverifierapi.com/api-docs/](https://emailverifierapi.com/api-docs/)
-- **Base URL:** `https://emailverifierapi.com/v2/`
+#### JSON Schema (1)
 
-#### Tags
+The data models the API reads and writes.
 
-- Email Verification
-- Deliverability
-- SMTP Check
-- Bounce Prevention
+- [VerificationResult](https://apis.io/schemas/email-verifier-api/email-verifier-api-verification-result/)
 
-#### Properties
+#### JSON Structure (1)
 
+Data models expressed in JSON Structure.
+
+- [Email Verifier Api Verification Result Structure](https://apis.io/json-structure/email-verifier-api/email-verifier-api-verification-result-structure/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Email Verifier Api Context](https://apis.io/jsonld/email-verifier-api/email-verifier-api-context/)
+
+#### Vocabulary (1)
+
+The provider's domain terms, defined.
+
+- [Email Verifier API Vocabulary](https://apis.io/vocabularies/email-verifier-api/email-verifier-api-vocabulary/)
+
+#### Examples (4)
+
+Example requests and responses.
+
+- [Email Verifier Api Disposable Example](https://apis.io/examples/email-verifier-api/email-verifier-api-disposable-example/)
+- [Email Verifier Api Mailbox Does Not Exist Example](https://apis.io/examples/email-verifier-api/email-verifier-api-mailbox-does-not-exist-example/)
+- [Email Verifier Api Mailbox Exists Example](https://apis.io/examples/email-verifier-api/email-verifier-api-mailbox-exists-example/)
+- [Email Verifier Api Typo Suggest Example](https://apis.io/examples/email-verifier-api/email-verifier-api-typo-suggest-example/)
+
+#### Collections (3)
+
+Postman and Open Collection request collections.
+
+- [Email Verifier API](https://apis.io/collections/email-verifier-api/open-email-verifier-api/)
+- [Email Verifier Verification API](https://apis.io/collections/email-verifier-api/open-email-verifier-api-verification-api/)
+- [Email Verifier Verification API](https://apis.io/collections/email-verifier-api/postman-email-verifier-api-verification-api/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Email Verifier Api Verification Api Overlay](https://apis.io/overlays/email-verifier-api/email-verifier-api-verification-api-overlay/)
+
+#### Governance rules (2)
+
+Spectral rulesets for the provider's contracts.
+
+- [Email Verifier API — jsonschema rules](https://apis.io/rules/email-verifier-api/email-verifier-api-jsonschema-spectral-rules/)
+- [Email Verifier API API Rules](https://apis.io/rules/email-verifier-api/email-verifier-api-rules/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Email Verifier Api Authentication](https://apis.io/security/email-verifier-api/email-verifier-api-authentication/)
+- [Email Verifier Api Domain Security](https://apis.io/security/email-verifier-api/email-verifier-api-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Email Verifier Api Plans Pricing](https://apis.io/plans/email-verifier-api/email-verifier-api-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Email Verifier Api Rate Limits](https://apis.io/rate-limits/email-verifier-api/email-verifier-api-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Email Verifier Api Finops](https://apis.io/finops/email-verifier-api/email-verifier-api-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.emailverifierapi.com/)
 - [Documentation](https://emailverifierapi.com/api-docs/)
-- [Sign Up](https://emailverifierapi.com/register/)
-- [Pricing](https://emailverifierapi.com/pricing/)
-- [Terms of Service](https://emailverifierapi.com/terms-of-service/)
-- [Privacy Policy](https://emailverifierapi.com/privacy-policy/)
-- [Login](https://emailverifierapi.com/login/)
-- [Blog](https://emailverifierapi.com/blog/)
-- [Integrations](https://emailverifierapi.com/integrations/)
-- [Free Tool](https://emailverifierapi.com/free-email-verifier/)
-- [Directory](https://emailverifierapi.com/verify-company-emails/)
-- [OpenAPI](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/openapi/email-verifier-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [JSON Schema](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/json-schema/email-verifier-api-verification-result-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Structure](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/json-structure/email-verifier-api-verification-result-structure.json)
-- [JSON-LD](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/json-ld/email-verifier-api-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-- [Spectral Rules](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/rules/email-verifier-api-rules.yml)
-- [Vocabulary](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/vocabulary/email-verifier-api-vocabulary.yml)
-- [Plans](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/plans/email-verifier-api-plans-pricing.yml)
-- [Rate Limits](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/rate-limits/email-verifier-api-rate-limits.yml)
-- [Fin Ops](https://raw.githubusercontent.com/api-evangelist/email-verifier-api/refs/heads/main/finops/email-verifier-api-finops.yml)
-- [Postman Collection](collections/email-verifier-api.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/email-verifier-api.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [Documentation](https://emailverifierapi.com/api-docs/)
-- [Sign Up](https://emailverifierapi.com/register/)
-- [Login](https://emailverifierapi.com/login/)
+- [API reference](https://emailverifierapi.com/api-docs/)
 - [Pricing](https://emailverifierapi.com/pricing/)
 - [Blog](https://emailverifierapi.com/blog/)
-- [Terms of Service](https://emailverifierapi.com/terms-of-service/)
-- [Privacy Policy](https://emailverifierapi.com/privacy-policy/)
-- [Integrations](https://emailverifierapi.com/integrations/)
-- [Free Tool](https://emailverifierapi.com/free-email-verifier/)
-- [Directory](https://emailverifierapi.com/verify-company-emails/)
-- [Support](mailto:support@emailverifierapi.com)
-- [Authentication](undefined)
-- [Features](undefined)
-- [Use Cases](undefined)
-- [Integrations](undefined)
-- [SDK](undefined)
-- [L L Ms Txt](https://emailverifierapi.com/llms.txt)
+- [Terms of service](https://emailverifierapi.com/terms-of-service/)
+- [Privacy policy](https://emailverifierapi.com/privacy-policy/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 46.5** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 61.2 |
+| Contract governance | 31.8 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 45.8 |
+| Access clarity | 46.1 |
+
+**Agent readiness 32.9** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 24.5** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/email-verifier-api/](https://apis.io/providers/email-verifier-api/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Email Verifier API: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/email-verifier-api/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
